@@ -73,7 +73,7 @@ class OpenWrtLuciRPC:
                     log.debug("method: '%s' returned : %s" % (method, result_value))
                     return result_value
 
-                if result['error'] is not None:
+                elif result['error'] is not None:
                     # On 18.06, we want to check for error 'Method not Found'
                     error_message = result['error']['message']
                     error_code = result['error']['code']
@@ -84,7 +84,10 @@ class OpenWrtLuciRPC:
                     if error_code == -32601:
                         raise LuciRpcMethodNotFoundError
                 else:
-                    log.error("method: '%s' returned : %s" % (method, result))
+                    log.debug("method: '%s' returned : %s" % (method, result))
+                    # Authentication error
+                    log.exception("Failed to authenticate with Luci RPC, check your username and password.")
+                    return
 
             except KeyError:
                 log.exception("No result in response from luci")

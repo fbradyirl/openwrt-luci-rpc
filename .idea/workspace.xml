@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="64918ce1-4ef3-4be4-b797-5073f9595861" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/openwrt_luci_rpc/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/openwrt_luci_rpc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/openwrt_luci_rpc.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openwrt_luci_rpc/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/openwrt_luci_rpc/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openwrt_luci_rpc/openwrt_luci_rpc.py" beforeDir="false" afterPath="$PROJECT_DIR$/openwrt_luci_rpc/openwrt_luci_rpc.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,8 +39,8 @@
       <file leaf-file-name="openwrt_luci_rpc.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/openwrt_luci_rpc/openwrt_luci_rpc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="72" column="82" selection-start-line="72" selection-start-column="82" selection-end-line="72" selection-end-column="82" />
+            <state relative-caret-position="453">
+              <caret line="88" column="106" selection-start-line="88" selection-start-column="106" selection-end-line="88" selection-end-column="106" />
               <folding>
                 <element signature="e#204#219#0" expanded="true" />
               </folding>
@@ -56,8 +51,8 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="61" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
+            <state relative-caret-position="270">
+              <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
               </folding>
@@ -293,8 +288,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="61" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
+        <state relative-caret-position="270">
+          <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
           <folding>
             <element signature="e#1#15#0" expanded="true" />
           </folding>
@@ -303,8 +298,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/openwrt_luci_rpc/openwrt_luci_rpc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="72" column="82" selection-start-line="72" selection-start-column="82" selection-end-line="72" selection-end-column="82" />
+        <state relative-caret-position="453">
+          <caret line="88" column="106" selection-start-line="88" selection-start-column="106" selection-end-line="88" selection-end-column="106" />
           <folding>
             <element signature="e#204#219#0" expanded="true" />
           </folding>
