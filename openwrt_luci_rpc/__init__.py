@@ -25,3 +25,10 @@ class OpenWrtRpc:
         :param password: string - password. Default is blank
         """
         self.router = OpenWrtLuciRPC(host_url, username, password)
+
+    def is_logged_in(self):
+        """Returns true if a token has been aquired"""
+        return self.router.token is not None
+
+    def get_all_connected_devices(self):
+        """Get details of all devices"""
