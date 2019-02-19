@@ -67,28 +67,39 @@ class OpenWrtLuciRPC:
         log.info('Determined a 18.06 or newer build of OpenWrt')
         return False, rpc_ip_call
 
-    def get_all_connected_devices(self):
-        """Get details of all connected devices"""
+    def get_all_connected_devices(self, only_reachable=True):
+        """
+        Get details of all connected devices
+        :param only_reachable: boolean, if true,
+               only return devices which are reachable
+        """
         log.info("Checking for connected devices")
+        last_results = []
 
         try:
             result = self._call_json_rpc(*self.arp_call)
         except InvalidLuciTokenError:
             log.info("Refreshing token")
             self._refresh_token()
-            return False
+            return self.get_all_connected_devices()
 
         if result:
             for device_entry in result:
-                log.info('device_entry. %s', device_entry)
+                device = {}
+                # log.debug('device_entry. %s', device_entry)
 
                 if "Flags" in device_entry:
                     # Older OpenWRT releases (pre-18.06)
-                    #
-                    # Check if the Flags for each device contain
-                    # NUD_REACHABLE and if so, add it to last_results
-                    if int(device_entry['Flags'], 16) & 0x2:
-                        self.last_results.append(device_entry['HW address'])
+
+                    if not only_reachable:
+                        # return everything
+                        device['macaddress'] = device_entry['HW address']
+                        last_results.append(device_entry['HW address'])
+                    else:
+                        # Check if the Flags for each device contain
+                        # NUD_REACHABLE and if so, add it to last_results
+                        if int(device_entry['Flags'], 16) & 0x2:
+                            last_results.append(device_entry['HW address'])
                 elif "reachable" in device_entry and "mac" in device_entry:
                     # Newer OpenWRT releases (18.06+)
                     #
@@ -97,12 +108,13 @@ class OpenWrtLuciRPC:
                     # when the device is inside the network.
                     # The very existence of the mac in the results
                     # is enough to determine the "device is home"
-                    if device_entry['reachable']:
-                        self.last_results.append(device_entry['mac'])
 
-            return True
+                    last_results.append(device_entry['mac'])
 
-        return False
+        # import ipdb ; ipdb.set_trace()
+
+        log.debug(last_results)
+        return last_results
 
     def _call_json_rpc(self, url, method, *args, **kwargs):
         """Perform one JSON RPC operation."""

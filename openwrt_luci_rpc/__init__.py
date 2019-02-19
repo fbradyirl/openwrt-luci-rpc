@@ -30,5 +30,7 @@ class OpenWrtRpc:
         """Returns true if a token has been aquired"""
         return self.router.token is not None
 
-    def get_all_connected_devices(self):
+    def get_all_connected_devices(self, only_reachable=True):
         """Get details of all devices"""
+        return self.router.get_all_connected_devices(
+            only_reachable=only_reachable)
