@@ -10,6 +10,7 @@ https://home-assistant.io/components/device_tracker.luci/
 import requests
 import json
 import logging
+from .constants import OpenWrtConstants
 
 log = logging.getLogger(__name__)
 
@@ -28,7 +29,7 @@ class LuciRpcMethodNotFoundError(Exception):
 
 class OpenWrtLuciRPC:
 
-    def __init__(self, host_url, username=None, password=None):
+    def __init__(self, host_url, username, password):
         """
         Initiate an API request with all parameters
         :param host_url: string
@@ -38,6 +39,7 @@ class OpenWrtLuciRPC:
         self.host_api_url = host_url
         self.username = username
         self.password = password
+        self.session = requests.Session()
         self.token = None
         self._refresh_token()
 
@@ -57,7 +59,9 @@ class OpenWrtLuciRPC:
 
         try:
             log.info("_call_json_rpc : %s" % url)
-            res = requests.post(url, data=data, timeout=5, **kwargs)
+            res = self.session.post(url, data=data,
+                                    timeout=OpenWrtConstants.DEFAULT_TIMEOUT,
+                                    **kwargs)
         except requests.exceptions.Timeout:
             log.exception("Connection to the router timed out")
             return

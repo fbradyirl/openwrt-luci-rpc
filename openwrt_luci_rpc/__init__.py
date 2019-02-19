@@ -16,11 +16,12 @@ class OpenWrtRpc:
     """
 
     def __init__(self, host_url=OpenWrtConstants.DEFAULT_LOCAL_HOST_URL,
-                 username=None, password=None):
+                 username=OpenWrtConstants.DEFAULT_USERNAME,
+                 password=OpenWrtConstants.DEFAULT_PASSWORD):
         """
         Initiate an instance with a default local ip (192.168.1.1)
-        :param ip: Ip of the box if you do not want the default one
-        :type ip: str
-        :return: A OpenWrtLuciRpc Instance
+        :param host_url: string - host url. Defaults to 192.168.1.1
+        :param username: string - username. Defaults to root
+        :param password: string - password. Default is blank
         """
         self.router = OpenWrtLuciRPC(host_url, username, password)

@@ -5,13 +5,13 @@
 
 
 import unittest
-from click.testing import CliRunner
+import requests
 
-from openwrt_luci_rpc import openwrt_luci_rpc
-from openwrt_luci_rpc import cli
+from openwrt_luci_rpc import OpenWrtRpc
+# from openwrt_luci_rpc.constants import OpenWrtConstants
 
 
-class TestOpenwrt_luci_rpc(unittest.TestCase):
+class TestOpenwrtLuciRPC(unittest.TestCase):
     """Tests for `openwrt_luci_rpc` package."""
 
     def setUp(self):
@@ -20,15 +20,22 @@ class TestOpenwrt_luci_rpc(unittest.TestCase):
     def tearDown(self):
         """Tear down test fixtures, if any."""
 
-    def test_000_something(self):
-        """Test something."""
+    def test_none_host(self):
+        """Test invalid host raises exception."""
+        with self.assertRaises(requests.exceptions.MissingSchema):
+            OpenWrtRpc(None)
 
-    def test_command_line_interface(self):
-        """Test the CLI."""
-        runner = CliRunner()
-        result = runner.invoke(cli.main)
-        assert result.exit_code == 0
-        assert 'openwrt_luci_rpc.cli.main' in result.output
-        help_result = runner.invoke(cli.main, ['--help'])
-        assert help_result.exit_code == 0
-        assert '--help  Show this message and exit.' in help_result.output
+    def test_empty_host(self):
+        """Test invalid host raises exception."""
+        with self.assertRaises(requests.exceptions.MissingSchema):
+            OpenWrtRpc("")
+
+    def test_no_schema_host(self):
+        """Test invalid host raises exception."""
+        with self.assertRaises(requests.exceptions.MissingSchema):
+            OpenWrtRpc("192.168.1.1")
+
+    # def test_defaults(self):
+    #     """Test defaults are in place."""
+    #     runner = OpenWrtRpc()
+    #     assert runner.router.username == OpenWrtConstants.DEFAULT_USERNAME
