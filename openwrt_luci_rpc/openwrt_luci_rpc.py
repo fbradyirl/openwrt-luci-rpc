@@ -33,6 +33,8 @@ class OpenWrtLuciRPC:
         self.session = requests.Session()
         self.token = None
         self._refresh_token()
+        self.is_legacy_version, self.arp_call \
+            = self._determine_if_legacy_version()
 
     def _refresh_token(self):
         """Get a new token."""
@@ -41,44 +43,39 @@ class OpenWrtLuciRPC:
     def _get_token(self):
         """Get authentication token for the given configuration."""
 
-        url = '{}/cgi-bin/luci/rpc/auth'.format(self.host_api_url)
-        return self._call_json_rpc(url, 'login', self.username, self.password)
+        auth_url = OpenWrtConstants.\
+            LUCI_RPC_LOGIN_PATH.format(self.host_api_url)
+        return self._call_json_rpc(auth_url, 'login',
+                                   self.username, self.password)
+
+    def _determine_if_legacy_version(self):
+        """Checks to see if we are running a pre-18.06 version"""
+
+        rpc_sys_call = OpenWrtConstants.\
+            LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
+        rpc_ip_call = OpenWrtConstants.\
+            LUCI_RPC_IP_PATH.format(
+                self.host_api_url), 'neighbors', {"family": 4}
+        try:
+            # Newer OpenWRT releases (18.06+)
+            self._call_json_rpc(*rpc_ip_call)
+        except LuciRpcMethodNotFoundError:
+            # This is normal for older OpenWRT (pre-18.06)
+            log.info('Determined a pre-18.06 build of OpenWrt')
+            return True, rpc_sys_call
+
+        log.info('Determined a 18.06 or newer build of OpenWrt')
+        return False, rpc_ip_call
 
     def get_all_connected_devices(self):
         """Get details of all connected devices"""
         log.info("Checking for connected devices")
 
-        sys_url = '{}/cgi-bin/luci/rpc/sys'.format(self.origin)
-        ip_url = '{}/cgi-bin/luci/rpc/ip'.format(self.origin)
-
         try:
-            if self.use_ip_neighbors_table:
-                try:
-                    # Newer OpenWRT releases (18.06+)
-                    result = _req_json_rpc(
-                        ip_url, 'neighbors', {"family": 4},
-                        params={'auth': self.token})
-                except LuciRpcMethodNotFoundError:
-                    # This is normal for older OpenWRT (pre-18.06)
-                    log.warn('method neighbors not found. '
-                                 'Will try older net.arptable instead')
-                    self.use_ip_neighbors_table = False
-                    return False
-            else:
-                try:
-                    # Older OpenWRT releases (pre-18.06)
-                    result = _req_json_rpc(
-                        sys_url, 'net.arptable', params={
-                            'auth': self.token})
-                except LuciRpcMethodNotFoundError:
-                    # This is normal for newer OpenWRT (18.06+)
-                    log.warn('method net.arptable not found. '
-                                 'Will try ip neighbors instead')
-                    self.use_ip_neighbors_table = True
-                    return False
+            result = self._call_json_rpc(*self.arp_call)
         except InvalidLuciTokenError:
             log.info("Refreshing token")
-            self.refresh_token()
+            self._refresh_token()
             return False
 
         if result:

@@ -5,5 +5,9 @@ class OpenWrtConstants:
     DEFAULT_PASSWORD = ""
     DEFAULT_TIMEOUT = 30
 
+    LUCI_RPC_LOGIN_PATH = '{}/cgi-bin/luci/rpc/auth'
+    LUCI_RPC_SYS_PATH = '{}/cgi-bin/luci/rpc/sys'
+    LUCI_RPC_IP_PATH = '{}/cgi-bin/luci/rpc/ip'
+
     def __init__(self):
         pass
