@@ -75,9 +75,12 @@ class OpenWrtLuciRPC:
         """
         log.info("Checking for connected devices")
         last_results = []
+        rpc_uci_call = OpenWrtConstants.LUCI_RPC_UCI_PATH.format(
+            self.host_api_url), 'get_all', 'dhcp'
 
         try:
             result = self._call_json_rpc(*self.arp_call)
+            dhcp_result = self._call_json_rpc(*rpc_uci_call)
         except InvalidLuciTokenError:
             log.info("Refreshing token")
             self._refresh_token()
@@ -85,7 +88,12 @@ class OpenWrtLuciRPC:
 
         if result:
             for device_entry in result:
-                device = OpenWrtConstants.DEFAULT_DEVICE
+                device = {
+                        "macaddress": None,
+                        "hostname": None,
+                        "ipaddress": None
+                }
+                mac = None
                 # log.debug('device_entry. %s', device_entry)
 
                 if "mac" in device_entry:
@@ -98,25 +106,35 @@ class OpenWrtLuciRPC:
                     # is enough to determine the "device is home"
                     if device_entry['dest']:
                         device['ipaddress'] = device_entry['dest']
-
-                    device['macaddress'] = device_entry['mac']
-                    last_results.append(device)
+                        mac = device_entry['mac']
 
                 elif "Flags" in device_entry:
                     # Older OpenWRT releases (pre-18.06)
+                    if device_entry['IP address']:
+                        device['ipaddress'] = device_entry['IP address']
 
                     if not only_reachable:
                         # return everything
-                        device['macaddress'] = device_entry['HW address']
-                        last_results.append(device)
+                        mac = device_entry['HW address']
                     else:
                         # Check if the Flags for each device contain
                         # NUD_REACHABLE and if so, add it to last_results
                         if int(device_entry['Flags'], 16) & 0x2:
-                            device['macaddress'] = device_entry['HW address']
-                            last_results.append(device)
+                            mac = device_entry['HW address']
 
-        # import ipdb ; ipdb.set_trace()
+                if mac is not None:
+                    # determine hostname
+                    if dhcp_result:
+                        hosts = [x for x in dhcp_result.values()
+                                 if x['.type'] == 'host' and
+                                 'mac' in x and 'name' in x]
+                        mac2name_list = [
+                            (x['mac'].upper(), x['name']) for x in hosts]
+                        mac2name = dict(mac2name_list)
+                        device['hostname'] = mac2name.get(mac.upper(), None)
+
+                    device['macaddress'] = mac
+                    last_results.append(device)
 
         log.debug(last_results)
         return last_results

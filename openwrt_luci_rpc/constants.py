@@ -8,12 +8,7 @@ class OpenWrtConstants:
     LUCI_RPC_LOGIN_PATH = '{}/cgi-bin/luci/rpc/auth'
     LUCI_RPC_SYS_PATH = '{}/cgi-bin/luci/rpc/sys'
     LUCI_RPC_IP_PATH = '{}/cgi-bin/luci/rpc/ip'
-
-    DEFAULT_DEVICE = {
-        "macaddress": "",
-        "hostname": "",
-        "ipaddress": ""
-    }
+    LUCI_RPC_UCI_PATH = '{}/cgi-bin/luci/rpc/uci'
 
     def __init__(self):
         pass
