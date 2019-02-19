@@ -13,6 +13,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
+
 class InvalidLuciTokenError(Exception):
     """When an invalid token is detected."""
 
@@ -23,6 +24,7 @@ class LuciRpcMethodNotFoundError(Exception):
     """When an invalid method is called."""
 
     pass
+
 
 class OpenWrtLuciRPC:
 
@@ -70,7 +72,8 @@ class OpenWrtLuciRPC:
                 result_value = result['result']
 
                 if result_value is not None:
-                    log.debug("method: '%s' returned : %s" % (method, result_value))
+                    log.debug("method: '%s' returned : %s" %
+                              (method, result_value))
                     return result_value
 
                 elif result['error'] is not None:
@@ -86,7 +89,9 @@ class OpenWrtLuciRPC:
                 else:
                     log.debug("method: '%s' returned : %s" % (method, result))
                     # Authentication error
-                    log.exception("Failed to authenticate with Luci RPC, check your username and password.")
+                    log.exception("Failed to authenticate "
+                                  "with Luci RPC, check your "
+                                  "username and password.")
                     return
 
             except KeyError:
