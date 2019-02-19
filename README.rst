@@ -28,3 +28,31 @@ Features
 
 * TODO
 
+
+Usage
+--------
+
+You will first need to install the package `luci-mod-rpc` on your OpenWrt router.
+
+```
+opkg update
+opkg install luci-mod-rpc
+```
+
+Once that is done, you can use this module to interact with the RPC interface.
+
+
+### Install
+
+```bash
+pip install openwrt-luci-rpc
+```
+
+### Use
+
+```python
+from openwrt_luci_rpc import OpenWrtRpc
+
+router = OpenWrtRpc('http://192.168.1.1', 'root', 'mypassword')
+
+```

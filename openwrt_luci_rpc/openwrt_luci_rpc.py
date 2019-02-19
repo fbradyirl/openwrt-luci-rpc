@@ -11,20 +11,11 @@ import requests
 import json
 import logging
 from .constants import OpenWrtConstants
+from .exceptions import InvalidLuciTokenError, \
+    LuciRpcMethodNotFoundError, InvalidLuciLoginError, \
+    LuciRpcUnknownError
 
 log = logging.getLogger(__name__)
-
-
-class InvalidLuciTokenError(Exception):
-    """When an invalid token is detected."""
-
-    pass
-
-
-class LuciRpcMethodNotFoundError(Exception):
-    """When an invalid method is called."""
-
-    pass
 
 
 class OpenWrtLuciRPC:
@@ -57,58 +48,47 @@ class OpenWrtLuciRPC:
         """Perform one JSON RPC operation."""
         data = json.dumps({'method': method, 'params': args})
 
-        try:
-            log.info("_call_json_rpc : %s" % url)
-            res = self.session.post(url, data=data,
-                                    timeout=OpenWrtConstants.DEFAULT_TIMEOUT,
-                                    **kwargs)
-        except requests.exceptions.Timeout:
-            log.exception("Connection to the router timed out")
-            return
-        if res.status_code == 200:
-            try:
-                result = res.json()
-            except ValueError:
-                # If json decoder could not parse the response
-                log.exception("Failed to parse response from luci")
-                return
-            try:
-                result_value = result['result']
+        log.info("_call_json_rpc : %s" % url)
+        res = self.session.post(url,
+                                data=data,
+                                timeout=OpenWrtConstants.DEFAULT_TIMEOUT,
+                                **kwargs)
 
-                if result_value is not None:
-                    log.debug("method: '%s' returned : %s" %
-                              (method, result_value))
-                    return result_value
+        if res.status_code == 200:
+            result = res.json()
+            try:
+                token = result['result']
+
+                if token is not None:
+                    log.info("Luci RPC login was successful")
+                    return token
 
                 elif result['error'] is not None:
                     # On 18.06, we want to check for error 'Method not Found'
                     error_message = result['error']['message']
                     error_code = result['error']['code']
-                    log.error(
-                        "method: '%s' returned an "
-                        "error '%s' (code: '%s).",
-                        method, error_message, error_code)
                     if error_code == -32601:
-                        raise LuciRpcMethodNotFoundError
+                        raise LuciRpcMethodNotFoundError(
+                            "method: '%s' returned an "
+                            "error '%s' (code: '%s).",
+                            method, error_message, error_code)
                 else:
                     log.debug("method: '%s' returned : %s" % (method, result))
                     # Authentication error
-                    log.exception("Failed to authenticate "
-                                  "with Luci RPC, check your "
-                                  "username and password.")
-                    return
+                    raise InvalidLuciLoginError("Failed to authenticate "
+                                                "with Luci RPC, check your "
+                                                "username and password.")
 
             except KeyError:
-                log.exception("No result in response from luci")
-                return
+                raise LuciRpcUnknownError("No result in response from luci")
+
         elif res.status_code == 401:
-            # Authentication error
-            log.exception(
-                "Failed to authenticate, check your username and password")
-            return
+            raise InvalidLuciLoginError("Failed to authenticate "
+                                        "with Luci RPC, check your "
+                                        "username and password.")
         elif res.status_code == 403:
-            log.error("Luci responded with a 403 Invalid token")
-            raise InvalidLuciTokenError
+            raise InvalidLuciTokenError("Luci responded "
+                                        "with a 403 Invalid token")
 
         else:
-            log.error("Invalid response from luci: %s", res)
+            raise LuciRpcUnknownError("Invalid response from luci: %s", res)
