@@ -8,6 +8,15 @@ class InvalidLuciLoginError(Exception):
     pass
 
 
+class PageNotFoundError(Exception):
+    """When a 404 happens."""
+
+    def __init__(self, message):
+        self.message = message
+
+    pass
+
+
 class InvalidLuciTokenError(Exception):
     """When an invalid token is detected."""
 

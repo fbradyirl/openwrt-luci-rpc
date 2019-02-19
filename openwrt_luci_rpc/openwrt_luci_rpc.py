@@ -13,7 +13,7 @@ import logging
 from .constants import OpenWrtConstants
 from .exceptions import InvalidLuciTokenError, \
     LuciRpcMethodNotFoundError, InvalidLuciLoginError, \
-    LuciRpcUnknownError
+    LuciRpcUnknownError, PageNotFoundError
 
 log = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ class OpenWrtLuciRPC:
         try:
             # Newer OpenWRT releases (18.06+)
             self._call_json_rpc(*rpc_ip_call)
-        except LuciRpcMethodNotFoundError:
+        except PageNotFoundError:
             # This is normal for older OpenWRT (pre-18.06)
             log.info('Determined a pre-18.06 build of OpenWrt')
             return True, rpc_sys_call
@@ -67,7 +67,7 @@ class OpenWrtLuciRPC:
         log.info('Determined a 18.06 or newer build of OpenWrt')
         return False, rpc_ip_call
 
-    def get_all_connected_devices(self, only_reachable=True):
+    def get_all_connected_devices(self, only_reachable):
         """
         Get details of all connected devices
         :param only_reachable: boolean, if true,
@@ -85,22 +85,10 @@ class OpenWrtLuciRPC:
 
         if result:
             for device_entry in result:
-                device = {}
+                device = OpenWrtConstants.DEFAULT_DEVICE
                 # log.debug('device_entry. %s', device_entry)
 
-                if "Flags" in device_entry:
-                    # Older OpenWRT releases (pre-18.06)
-
-                    if not only_reachable:
-                        # return everything
-                        device['macaddress'] = device_entry['HW address']
-                        last_results.append(device_entry['HW address'])
-                    else:
-                        # Check if the Flags for each device contain
-                        # NUD_REACHABLE and if so, add it to last_results
-                        if int(device_entry['Flags'], 16) & 0x2:
-                            last_results.append(device_entry['HW address'])
-                elif "reachable" in device_entry and "mac" in device_entry:
+                if "mac" in device_entry:
                     # Newer OpenWRT releases (18.06+)
                     #
                     # Do not use `reachable` or `stale` values
@@ -108,8 +96,25 @@ class OpenWrtLuciRPC:
                     # when the device is inside the network.
                     # The very existence of the mac in the results
                     # is enough to determine the "device is home"
+                    if device_entry['dest']:
+                        device['ipaddress'] = device_entry['dest']
 
-                    last_results.append(device_entry['mac'])
+                    device['macaddress'] = device_entry['mac']
+                    last_results.append(device)
+
+                elif "Flags" in device_entry:
+                    # Older OpenWRT releases (pre-18.06)
+
+                    if not only_reachable:
+                        # return everything
+                        device['macaddress'] = device_entry['HW address']
+                        last_results.append(device)
+                    else:
+                        # Check if the Flags for each device contain
+                        # NUD_REACHABLE and if so, add it to last_results
+                        if int(device_entry['Flags'], 16) & 0x2:
+                            device['macaddress'] = device_entry['HW address']
+                            last_results.append(device)
 
         # import ipdb ; ipdb.set_trace()
 
@@ -161,6 +166,11 @@ class OpenWrtLuciRPC:
         elif res.status_code == 403:
             raise InvalidLuciTokenError("Luci responded "
                                         "with a 403 Invalid token")
+        elif res.status_code == 404:
+            raise PageNotFoundError("404 returned "
+                                    "from %s. Ensure you have "
+                                    "installed package "
+                                    "`luci-mod-rpc`." % url)
 
         else:
             raise LuciRpcUnknownError("Invalid response from luci: %s", res)
