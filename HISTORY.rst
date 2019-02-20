@@ -17,32 +17,7 @@ History
 
 * First working release on PyPI.
 
-0.4.0 (2019-02-20)
-------------------
-
-* Docs update and travis auto deploy.
-
-0.4.2 (2019-02-20)
-------------------
-
-* Docs update fix for README.
-
-0.4.3 (2019-02-20)
-------------------
-
-* Run travis on python 3.6
-
-0.4.4 (2019-02-20)
-------------------
-
-* Fix travis deploy repo
-
-0.4.5 (2019-02-20)
-------------------
-
-* Fix travis deploy repo
-
-0.4.6 (2019-02-20)
+0.4.7 (2019-02-20)
 ------------------
 
 * Fix travis deploy repo, once more.
