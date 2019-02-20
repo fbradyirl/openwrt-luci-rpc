@@ -21,3 +21,8 @@ History
 ------------------
 
 * Docs update and travis auto deploy.
+
+0.4.2 (2019-02-20)
+------------------
+
+* Docs update fix for README.
