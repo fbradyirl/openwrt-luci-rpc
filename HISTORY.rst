@@ -21,3 +21,8 @@ History
 ------------------
 
 * Fix travis deploy repo, once more.
+
+0.4.9 (2019-02-20)
+------------------
+
+* Fix README formatting for docs.
