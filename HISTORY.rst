@@ -26,3 +26,8 @@ History
 ------------------
 
 * Docs update fix for README.
+
+0.4.3 (2019-02-20)
+------------------
+
+* Run travis on python 3.6
