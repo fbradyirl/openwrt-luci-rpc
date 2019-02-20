@@ -2,7 +2,12 @@
 History
 =======
 
-0.1.0 (2019-01-18)
+0.3.0 (2019-02-19)
 ------------------
 
-* First release on PyPI.
+* First working release on PyPI.
+
+0.4.0 (2019-02-20)
+------------------
+
+* Docs update and travis auto deploy.
