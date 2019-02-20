@@ -11,5 +11,5 @@ deploy:
     secure: m1kg/B4c9k39qltYhq85JkZDfRg0Ouc5VtWscTGmUhbhBbQpOHGjEPE8szkkzpspqe9E5Wog0E/NBWsOx5oyMkIY6eN/kGv7HaWVZgxYFbAQfvx1Cngk+JLOhCLvm+znGSy0Ol4g0H9d7nzH/lPUAegXlmmL7DAiUWEzpLmpMFS2lUdkYDCz9CZ3F3OmtVF/2YXXrOEwPLjRIwnJh2Wif019cnyy0W4Ly/zNvY/XtUL1FxS3nR4RXrj1+FLSaRXN3LC6TydpXNmblTbSKNS8B7Mb1o+q0sacqDDr3r9LFrH7YqEiYhiNn+wIxF8d9rjQ/7uwcNgWMz7cECOk33+cVmWMmfEBW10BSnibEfkXHqqkI6E+R8iZv1aM031uSea1T32VZ+AL4OhcolaHzCLoFIblXo9J7sWj7m5BRRPDVp0lp96CInCL+syUhjwsZAHNcwBavGybuHjozqslLJFchwYlZLDcUohrkgFCXPK8k0ansUJB+Pp+QejOERRFvuePxG0L2hTSSeL3yLmTfdLXOB2xhdcc2ao4CD4wlpoIzEnx4znsfjqSWHgJ5xJGiziZwKtctS7t253yuqfW7Eg6IZ2MHkYWACcnCi/OjgxRrKQPLcquWuSOvAHbSEIUJw8XhekTP86dmXOj53mdVUWH7h0ajGXCZneKDSKAhQoYKiM=
   on:
     tags: true
-    repo: finbarr/openwrt_luci_rpc
+    repo: finbarr/openwrt-luci-rpc
     python: 3.6

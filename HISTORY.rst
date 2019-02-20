@@ -31,3 +31,8 @@ History
 ------------------
 
 * Run travis on python 3.6
+
+0.4.4 (2019-02-20)
+------------------
+
+* Fix travis deploy repo
