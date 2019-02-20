@@ -4,7 +4,7 @@
 
 __author__ = """Finbarr Brady"""
 __email__ = 'fbradyirl@github.io'
-__version__ = '0.4.9'
+__version__ = '0.4.10'
 
 from .openwrt_luci_rpc import OpenWrtLuciRPC
 from .constants import OpenWrtConstants
