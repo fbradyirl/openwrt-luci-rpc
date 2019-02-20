@@ -57,10 +57,16 @@ Use
 
    router = OpenWrtRpc('http://192.168.1.1', 'root', 'mypassword')
 
+   result = self.router.get_all_connected_devices(only_reachable=True)
+
+   for device in result:
+      mac = device['macaddress']
+      name = device['hostname']
+
+
 Development
 ~~~~~~~~~~~
 
 See `contributing guide`_.
 
-.. _`https://openwrt-luci-rpc.readthedocs.io`: https://openwrt-luci-rpc.readthedocs.io
 .. _contributing guide: CONTRIBUTING.rst

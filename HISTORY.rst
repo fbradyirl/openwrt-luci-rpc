@@ -31,3 +31,8 @@ History
 ------------------
 
 * Fix links to github repo
+
+0.4.11 (2019-02-20)
+------------------
+
+* Updated usage in README.
