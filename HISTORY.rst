@@ -36,3 +36,8 @@ History
 ------------------
 
 * Fix travis deploy repo
+
+0.4.5 (2019-02-20)
+------------------
+
+* Fix travis deploy repo
