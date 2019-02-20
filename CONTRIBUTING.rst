@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/finbarr/openwrt_luci_rpc/issues.
+Report bugs at https://github.com/fbradyirl/openwrt-luci-rpc/issues.
 
 If you are reporting a bug, please include:
 
@@ -45,7 +45,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/finbarr/openwrt_luci_rpc/issues.
+The best way to send feedback is to file an issue at https://github.com/fbradyirl/openwrt-luci-rpc/issues.
 
 If you are proposing a feature:
 

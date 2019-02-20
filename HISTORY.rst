@@ -26,3 +26,8 @@ History
 ------------------
 
 * Fix README formatting for docs.
+
+0.4.10 (2019-02-20)
+------------------
+
+* Fix links to github repo

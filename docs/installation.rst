@@ -38,7 +38,7 @@ Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/finbarr/openwrt_luci_rpc/tarball/master
+    $ curl  -OL https://github.com/fbradyirl/openwrt-luci-rpc/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/finbarr/openwrt_luci_rpc
-.. _tarball: https://github.com/finbarr/openwrt_luci_rpc/tarball/master
+.. _Github repo: https://github.com/fbradyirl/openwrt-luci-rpc
+.. _tarball: https://github.com/fbradyirl/openwrt-luci-rpc/tarball/master
