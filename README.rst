@@ -57,7 +57,7 @@ Use
 
    router = OpenWrtRpc('http://192.168.1.1', 'root', 'mypassword')
 
-   result = self.router.get_all_connected_devices(only_reachable=True)
+   result = router.get_all_connected_devices(only_reachable=True)
 
    for device in result:
       mac = device['macaddress']

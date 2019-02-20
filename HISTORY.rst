@@ -36,3 +36,8 @@ History
 ------------------
 
 * Updated usage in README.
+
+0.4.12 (2019-02-20)
+------------------
+
+* Fix typo in README.
