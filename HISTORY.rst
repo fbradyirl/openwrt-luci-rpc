@@ -17,7 +17,7 @@ History
 
 * First working release on PyPI.
 
-0.4.7 (2019-02-20)
+0.4.8 (2019-02-20)
 ------------------
 
 * Fix travis deploy repo, once more.
