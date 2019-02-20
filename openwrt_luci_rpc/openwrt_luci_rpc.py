@@ -122,7 +122,7 @@ class OpenWrtLuciRPC:
                         if int(device_entry['Flags'], 16) & 0x2:
                             mac = device_entry['HW address']
 
-                if mac is not None:
+                if mac:
                     # determine hostname
                     if dhcp_result:
                         hosts = [x for x in dhcp_result.values()

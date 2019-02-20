@@ -64,10 +64,10 @@ Ready to contribute? Here's how to set up `openwrt_luci_rpc` for local developme
 
     $ git clone git@github.com:your_name_here/openwrt_luci_rpc.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtual env. Assuming you have python3 installed, this is how you set up your fork for local development::
 
-    $ mkvirtualenv openwrt_luci_rpc
     $ cd openwrt_luci_rpc/
+    $ python3 -m venv .venv
     $ python setup.py develop
 
 4. Create a branch for local development::
