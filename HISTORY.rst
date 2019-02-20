@@ -41,3 +41,8 @@ History
 ------------------
 
 * Fix typo in README.
+
+0.4.13 (2019-02-20)
+------------------
+
+* Fix README parse issue.
