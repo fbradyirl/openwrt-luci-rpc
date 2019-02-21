@@ -88,6 +88,9 @@ class OpenWrtLuciRPC:
 
         :param only_reachable: boolean, if true,
                only return devices which are reachable
+               (this is for 17.06 or earlier only. 18+
+               does not have a proper ability to determine
+               this, as above)
         """
         log.info("Checking for connected devices")
         last_results = []
