@@ -7,6 +7,9 @@ log = logging.getLogger(__name__)
 def normalise_keys(result):
     """Replace 17.06 keys with newer ones."""
 
+    # named tuple keys cannot have spaces or begin with dots. Remove those
+    result = {k.strip('.').replace(" ", ""): v for k, v in result.items()}
+
     for old_key, new_key in OpenWrtConstants.MODERN_KEYS.items():
         if old_key in result:
             result[new_key] = result[old_key]
