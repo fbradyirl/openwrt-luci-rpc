@@ -10,6 +10,9 @@ https://home-assistant.io/components/device_tracker.luci/
 import requests
 import json
 import logging
+
+from collections import namedtuple
+from openwrt_luci_rpc import utilities
 from .constants import OpenWrtConstants
 from .exceptions import InvalidLuciTokenError, \
     LuciRpcMethodNotFoundError, InvalidLuciLoginError, \
@@ -49,8 +52,12 @@ class OpenWrtLuciRPC:
                                    self.username, self.password)
 
     def _determine_if_legacy_version(self):
-        """Checks to see if we are running a pre-18.06 version"""
+        """
+        * Checks to see if we are running a pre-18.06 version
 
+        :return: tuple, with True if legacy and the URL to
+                use to lookup devices
+        """
         rpc_sys_call = OpenWrtConstants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
         rpc_ip_call = OpenWrtConstants.\
@@ -69,7 +76,16 @@ class OpenWrtLuciRPC:
 
     def get_all_connected_devices(self, only_reachable):
         """
-        Get details of all connected devices
+        Get details of all connected devices.
+
+        Notes around newer OpenWRT releases (18.06+)
+
+            Do not use `reachable` or `stale` values
+            as they flap constantly even
+            when the device is inside the network.
+            The very existence of the mac in the results
+            is enough to determine the "device is home"
+
         :param only_reachable: boolean, if true,
                only return devices which are reachable
         """
@@ -88,53 +104,23 @@ class OpenWrtLuciRPC:
 
         if result:
             for device_entry in result:
-                device = {
-                        "macaddress": None,
-                        "hostname": None,
-                        "ipaddress": None
-                }
-                mac = None
-                # log.debug('device_entry. %s', device_entry)
+                utilities.normalise_keys(device_entry)
 
-                if "mac" in device_entry:
-                    # Newer OpenWRT releases (18.06+)
-                    #
-                    # Do not use `reachable` or `stale` values
-                    # as they flap constantly even
-                    # when the device is inside the network.
-                    # The very existence of the mac in the results
-                    # is enough to determine the "device is home"
-                    if device_entry['dest']:
-                        device['ipaddress'] = device_entry['dest']
-                        mac = device_entry['mac']
+                if "mac" not in device_entry:
+                    continue
 
-                elif "Flags" in device_entry:
-                    # Older OpenWRT releases (pre-18.06)
-                    if device_entry['IP address']:
-                        device['ipaddress'] = device_entry['IP address']
+                device_entry['hostname'] = utilities.get_hostname_from_dhcp(
+                    dhcp_result, device_entry['mac'])
+                device = namedtuple("Device", device_entry.keys())(
+                    *device_entry.values())
 
-                    if not only_reachable:
-                        # return everything
-                        mac = device_entry['HW address']
-                    else:
-                        # Check if the Flags for each device contain
-                        # NUD_REACHABLE and if so, add it to last_results
-                        if int(device_entry['Flags'], 16) & 0x2:
-                            mac = device_entry['HW address']
+                if "Flags" in device_entry and only_reachable:
+                    # Check if the Flags for each device contain
+                    # NUD_REACHABLE and if not, skip.
+                    if not int(device_entry['Flags'], 16) & 0x2:
+                        continue
 
-                if mac:
-                    # determine hostname
-                    if dhcp_result:
-                        hosts = [x for x in dhcp_result.values()
-                                 if x['.type'] == 'host' and
-                                 'mac' in x and 'name' in x]
-                        mac2name_list = [
-                            (x['mac'].upper(), x['name']) for x in hosts]
-                        mac2name = dict(mac2name_list)
-                        device['hostname'] = mac2name.get(mac.upper(), None)
-
-                    device['macaddress'] = mac
-                    last_results.append(device)
+                last_results.append(device)
 
         log.debug(last_results)
         return last_results
