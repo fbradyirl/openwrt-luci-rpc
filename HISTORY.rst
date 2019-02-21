@@ -46,3 +46,9 @@ History
 ------------------
 
 * Fix README parse issue.
+
+1.0.0 (2019-02-21)
+------------------
+
+* Updated to return all device information.
+* Added extra unit tests.
