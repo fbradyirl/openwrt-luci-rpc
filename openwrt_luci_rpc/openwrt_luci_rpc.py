@@ -40,16 +40,12 @@ class OpenWrtLuciRPC:
             = self._determine_if_legacy_version()
 
     def _refresh_token(self):
-        """Get a new token."""
-        self.token = self._get_token()
-
-    def _get_token(self):
         """Get authentication token for the given configuration."""
-
         auth_url = OpenWrtConstants.\
             LUCI_RPC_LOGIN_PATH.format(self.host_api_url)
-        return self._call_json_rpc(auth_url, 'login',
-                                   self.username, self.password)
+        self.token = self._call_json_rpc(auth_url, 'login',
+                                         self.username, self.password)
+        log.info("Luci RPC login was successful")
 
     def _determine_if_legacy_version(self):
         """
@@ -101,7 +97,7 @@ class OpenWrtLuciRPC:
             result = self._call_json_rpc(*self.arp_call)
             dhcp_result = self._call_json_rpc(*rpc_uci_call)
         except InvalidLuciTokenError:
-            log.info("Refreshing token")
+            log.info("Refreshing login token")
             self._refresh_token()
             return self.get_all_connected_devices()
 
@@ -141,11 +137,10 @@ class OpenWrtLuciRPC:
         if res.status_code == 200:
             result = res.json()
             try:
-                token = result['result']
+                content = result['result']
 
-                if token is not None:
-                    log.info("Luci RPC login was successful")
-                    return token
+                if content is not None:
+                    return content
 
                 elif result['error'] is not None:
                     # On 18.06, we want to check for error 'Method not Found'

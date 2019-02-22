@@ -57,3 +57,8 @@ History
 ------------------
 
 * Minor bug fixes and extra unit tests
+
+1.0.2 (2019-02-22)
+------------------
+
+* Logging fixes around token refresh

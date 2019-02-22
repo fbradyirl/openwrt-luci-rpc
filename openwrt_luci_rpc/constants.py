@@ -16,8 +16,8 @@ class OpenWrtConstants:
     # Spaces and dots are removed so keep them out of here also.
     MODERN_KEYS = {
         "HW_address": "mac",
-        "IP_address": "ipaddress",
-        "dest": "ipaddress"
+        "IP_address": "ip",
+        "dest": "ip"
     }
 
     def __init__(self):
