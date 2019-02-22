@@ -28,22 +28,22 @@ History
 * Fix README formatting for docs.
 
 0.4.10 (2019-02-20)
-------------------
+-------------------
 
 * Fix links to github repo
 
 0.4.11 (2019-02-20)
-------------------
+-------------------
 
 * Updated usage in README.
 
 0.4.12 (2019-02-20)
-------------------
+-------------------
 
 * Fix typo in README.
 
 0.4.13 (2019-02-20)
-------------------
+-------------------
 
 * Fix README parse issue.
 
@@ -62,3 +62,8 @@ History
 ------------------
 
 * Logging fixes around token refresh
+
+1.0.3 (2019-02-22)
+------------------
+
+* Fix History.rst formatting issue.
