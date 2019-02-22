@@ -18,7 +18,7 @@ openwrt-luci-rpc
 Python3 module for interacting with the OpenWRT Luci RPC interface
 
 -  Free software: Apache Software License 2.0
--  Documentation: `https://openwrt-luci-rpc.readthedocs.io`.
+-  Documentation: `https://openwrt-luci-rpc.readthedocs.io`_.
 
 Features
 --------
@@ -57,16 +57,10 @@ Use
 
    router = OpenWrtRpc('http://192.168.1.1', 'root', 'mypassword')
 
-   result = router.get_all_connected_devices(only_reachable=True)
-
-   for device in result:
-      mac = device['macaddress']
-      name = device['hostname']
-
-
 Development
 ~~~~~~~~~~~
 
 See `contributing guide`_.
 
+.. _`https://openwrt-luci-rpc.readthedocs.io`: https://openwrt-luci-rpc.readthedocs.io
 .. _contributing guide: CONTRIBUTING.rst
