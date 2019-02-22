@@ -8,6 +8,15 @@ class InvalidLuciLoginError(Exception):
     pass
 
 
+class LuciConfigError(Exception):
+    """When an invalid config is attempted."""
+
+    def __init__(self, message):
+        self.message = message
+
+    pass
+
+
 class PageNotFoundError(Exception):
     """When a 404 happens."""
 

@@ -27,7 +27,7 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python :: 3.7',
     ],
-    description="Module for interacting with OpenWRT Luci RPC interface",
+    description="Module for interacting with OpenWrt Luci RPC interface",
     install_requires=requirements,
     license="Apache Software License 2.0",
     long_description=readme + '\n\n' + history,

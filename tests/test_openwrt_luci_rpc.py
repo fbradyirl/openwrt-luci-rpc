@@ -11,6 +11,7 @@ from unittest.mock import Mock, patch
 from openwrt_luci_rpc import OpenWrtRpc
 from openwrt_luci_rpc.constants import OpenWrtConstants
 from openwrt_luci_rpc import utilities
+from openwrt_luci_rpc.exceptions import LuciConfigError
 
 
 class TestOpenwrtLuciRPC(unittest.TestCase):
@@ -24,18 +25,13 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
 
     def test_none_host(self):
         """Test invalid host raises exception."""
-        with self.assertRaises(requests.exceptions.MissingSchema):
+        with self.assertRaises(LuciConfigError):
             OpenWrtRpc(None)
 
     def test_empty_host(self):
         """Test invalid host raises exception."""
-        with self.assertRaises(requests.exceptions.MissingSchema):
+        with self.assertRaises(LuciConfigError):
             OpenWrtRpc("")
-
-    def test_no_schema_host(self):
-        """Test invalid host raises exception."""
-        with self.assertRaises(requests.exceptions.MissingSchema):
-            OpenWrtRpc("192.168.1.1")
 
     @patch('requests.Session.post')
     def test_defaults(self, mock_post):
@@ -52,10 +48,9 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         mock_post.return_value.json.return_value = json_result
 
         runner = OpenWrtRpc()
-        assert runner.router.host_api_url == OpenWrtConstants.DEFAULT_LOCAL_HOST_URL
+        assert runner.router.host_api_url == '{}://{}'.format("http", OpenWrtConstants.DEFAULT_LOCAL_HOST)
         assert runner.router.username == OpenWrtConstants.DEFAULT_USERNAME
         assert runner.router.password == OpenWrtConstants.DEFAULT_PASSWORD
-
 
     def test_normalise_key_stripping(self):
         """Test replacing dots and spaces works."""

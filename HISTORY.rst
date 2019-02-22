@@ -67,3 +67,9 @@ History
 ------------------
 
 * Fix History.rst formatting issue.
+
+1.0.4 (2019-02-22)
+------------------
+
+* Take SSL param in init now
+* Fix some typos

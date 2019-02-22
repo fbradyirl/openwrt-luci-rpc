@@ -15,16 +15,17 @@ class OpenWrtRpc:
     Class to interact with OpenWrt router running luci-mod-rpc package.
     """
 
-    def __init__(self, host_url=OpenWrtConstants.DEFAULT_LOCAL_HOST_URL,
+    def __init__(self, host_url=OpenWrtConstants.DEFAULT_LOCAL_HOST,
                  username=OpenWrtConstants.DEFAULT_USERNAME,
-                 password=OpenWrtConstants.DEFAULT_PASSWORD):
+                 password=OpenWrtConstants.DEFAULT_PASSWORD,
+                 is_https=OpenWrtConstants.DEFAULT_HTTPS):
         """
         Initiate an instance with a default local ip (192.168.1.1)
         :param host_url: string - host url. Defaults to 192.168.1.1
         :param username: string - username. Defaults to root
         :param password: string - password. Default is blank
         """
-        self.router = OpenWrtLuciRPC(host_url, username, password)
+        self.router = OpenWrtLuciRPC(host_url, username, password, is_https)
 
     def is_logged_in(self):
         """Returns true if a token has been aquired"""

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Support for OpenWRT (luci) routers.
+Support for OpenWrt (luci) routers.
 
 For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/device_tracker.luci/
@@ -16,21 +16,29 @@ from openwrt_luci_rpc import utilities
 from .constants import OpenWrtConstants
 from .exceptions import InvalidLuciTokenError, \
     LuciRpcMethodNotFoundError, InvalidLuciLoginError, \
-    LuciRpcUnknownError, PageNotFoundError
+    LuciRpcUnknownError, PageNotFoundError, LuciConfigError
 
 log = logging.getLogger(__name__)
 
 
 class OpenWrtLuciRPC:
 
-    def __init__(self, host_url, username, password):
+    def __init__(self, host, username, password, is_https):
         """
         Initiate an API request with all parameters
-        :param host_url: string
+        :param host: string
         :param username: string
         :param password: string
         """
-        self.host_api_url = host_url
+
+        if not host:
+            raise LuciConfigError('host cannot be empty. '
+                                  'Use the IP or hostname of your'
+                                  'OpenWrt router')
+
+        protocol = 'http' if not is_https else 'https'
+        self.host = host
+        self.host_api_url = '{}://{}'.format(protocol, host)
         self.username = username
         self.password = password
         self.session = requests.Session()
@@ -60,10 +68,10 @@ class OpenWrtLuciRPC:
             LUCI_RPC_IP_PATH.format(
                 self.host_api_url), 'neighbors', {"family": 4}
         try:
-            # Newer OpenWRT releases (18.06+)
+            # Newer OpenWrt releases (18.06+)
             self._call_json_rpc(*rpc_ip_call)
         except PageNotFoundError:
-            # This is normal for older OpenWRT (pre-18.06)
+            # This is normal for older OpenWrt (pre-18.06)
             log.info('Determined a pre-18.06 build of OpenWrt')
             return True, rpc_sys_call
 
@@ -74,7 +82,7 @@ class OpenWrtLuciRPC:
         """
         Get details of all connected devices.
 
-        Notes around newer OpenWRT releases (18.06+)
+        Notes around newer OpenWrt releases (18.06+)
 
             Do not use `reachable` or `stale` values
             as they flap constantly even
@@ -118,6 +126,9 @@ class OpenWrtLuciRPC:
                     # NUD_REACHABLE and if not, skip.
                     if not int(device_entry['Flags'], 16) & 0x2:
                         continue
+
+                if "host" not in device_entry:
+                    device_entry['host'] = self.host
 
                 last_results.append(device)
 

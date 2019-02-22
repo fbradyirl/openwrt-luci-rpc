@@ -15,7 +15,7 @@ openwrt-luci-rpc
         :alt: Documentation Status
 
 
-Python3 module for interacting with the OpenWRT Luci RPC interface
+Python3 module for interacting with the OpenWrt Luci RPC interface
 
 -  Free software: Apache Software License 2.0
 -  Documentation: `https://openwrt-luci-rpc.readthedocs.io`_.
@@ -55,7 +55,15 @@ Use
 
    from openwrt_luci_rpc import OpenWrtRpc
 
-   router = OpenWrtRpc('http://192.168.1.1', 'root', 'mypassword')
+   router = OpenWrtRpc('192.168.1.1', 'root', 'mypassword')
+   result = router.get_all_connected_devices(only_reachable=True)
+
+   for device in result:
+      mac = device.mac
+      name = device.hostname
+
+      # convert class to a dict
+      device_dict = device._asdict()
 
 Development
 ~~~~~~~~~~~
