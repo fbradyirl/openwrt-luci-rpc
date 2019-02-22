@@ -73,3 +73,10 @@ History
 
 * Take SSL param in init now
 * Fix some typos
+
+1.0.5 (2019-02-22)
+------------------
+
+* As a convenience, as the router IP as the host
+  for every device. Can be useful when a network has more
+  than one router.

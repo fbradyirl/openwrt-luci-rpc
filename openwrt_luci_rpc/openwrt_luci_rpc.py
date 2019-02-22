@@ -118,6 +118,13 @@ class OpenWrtLuciRPC:
 
                 device_entry['hostname'] = utilities.get_hostname_from_dhcp(
                     dhcp_result, device_entry['mac'])
+
+                # As a convenience, as the router IP as the host
+                # for every device. Can be useful when a network has more
+                # than one router.
+                if "host" not in device_entry:
+                    device_entry['host'] = self.host
+
                 device = namedtuple("Device", device_entry.keys())(
                     *device_entry.values())
 
@@ -126,9 +133,6 @@ class OpenWrtLuciRPC:
                     # NUD_REACHABLE and if not, skip.
                     if not int(device_entry['Flags'], 16) & 0x2:
                         continue
-
-                if "host" not in device_entry:
-                    device_entry['host'] = self.host
 
                 last_results.append(device)
 
