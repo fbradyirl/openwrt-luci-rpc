@@ -58,7 +58,7 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
 
 
     def test_normalise_key_stripping(self):
-        """Test removing dots and spaces works."""
+        """Test replacing dots and spaces works."""
 
         data = {
             ".name": "cfg07ee1",
@@ -75,4 +75,5 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
 
         assert data['_name'] == "cfg07ee1"
         assert data['_type'] == "host"
+        assert data['ip'] == "192.168.1.124"
 

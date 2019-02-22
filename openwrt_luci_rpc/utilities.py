@@ -21,14 +21,18 @@ def normalise_keys(result):
 
 
 def get_hostname_from_dhcp(dhcp_result, mac):
-    # determine hostname
+    """Determine the hostname for this mac."""
     if dhcp_result:
-        hosts = [x for x in dhcp_result.values()
-                 if x['.type'] == 'host' and
-                 'mac' in x and 'name' in x]
-        mac2name_list = [
-            (x['mac'].upper(), x['name']) for x in hosts]
-        mac2name = dict(mac2name_list)
-        return mac2name.get(mac, None)
+
+        host = [x for x in dhcp_result.values()
+                if x['.type'] == 'host'
+                and 'mac' in x
+                and 'name' in x
+                and x['mac'].upper() == mac]
+
+        if host:
+            log.debug("DNS name lookup for mac {} "
+                      "found {}".format(mac, host[0]['name']))
+            return host[0]['name']
 
     return None
