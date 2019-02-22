@@ -52,3 +52,8 @@ History
 
 * Updated to return all device information.
 * Added extra unit tests.
+
+1.0.1 (2019-02-22)
+------------------
+
+* Minor bug fixes and extra unit tests
