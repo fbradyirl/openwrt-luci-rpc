@@ -79,4 +79,4 @@ History
 
 * As a convenience, as the router IP as the host
   for every device. Can be useful when a network has more
-  than one router.
+  than one router. 
