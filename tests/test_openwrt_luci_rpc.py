@@ -10,6 +10,7 @@ from unittest.mock import Mock, patch
 
 from openwrt_luci_rpc import OpenWrtRpc
 from openwrt_luci_rpc.constants import OpenWrtConstants
+from openwrt_luci_rpc import utilities
 
 
 class TestOpenwrtLuciRPC(unittest.TestCase):
@@ -54,3 +55,24 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         assert runner.router.host_api_url == OpenWrtConstants.DEFAULT_LOCAL_HOST_URL
         assert runner.router.username == OpenWrtConstants.DEFAULT_USERNAME
         assert runner.router.password == OpenWrtConstants.DEFAULT_PASSWORD
+
+
+    def test_normalise_key_stripping(self):
+        """Test removing dots and spaces works."""
+
+        data = {
+            ".name": "cfg07ee1",
+            ".type": "host",
+            "name": "imac-ethernet",
+            ".index": 4,
+            "mac": "c8:2a:10:4a:10:dd",
+            "dns": "1",
+            ".anonymous": True,
+            "ip": "192.168.1.124"
+        }
+
+        data = utilities.normalise_keys(data)
+
+        assert data['_name'] == "cfg07ee1"
+        assert data['_type'] == "host"
+

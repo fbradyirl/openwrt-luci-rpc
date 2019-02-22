@@ -107,7 +107,7 @@ class OpenWrtLuciRPC:
 
         if result:
             for device_entry in result:
-                utilities.normalise_keys(device_entry)
+                device_entry = utilities.normalise_keys(device_entry)
 
                 if "mac" not in device_entry:
                     continue

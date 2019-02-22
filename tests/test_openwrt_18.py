@@ -19,10 +19,10 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         """Tear down test fixtures, if any."""
 
     def test_normalise_keys(self):
-        """Test replacing v17 keys works as expected."""
+        """Test replacing v18 keys works as expected."""
 
         data = {'dest': "10.1.1.11"}
 
-        utilities.normalise_keys(data)
+        data = utilities.normalise_keys(data)
 
         assert data[OpenWrtConstants.MODERN_KEYS["dest"]] == '10.1.1.11'

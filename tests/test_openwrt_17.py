@@ -21,15 +21,20 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
     def test_normalise_keys(self):
         """Test replacing v17 keys works as expected."""
 
-        data = {'dev': 'br-lan',
-                'stale': True,
+        data = {
+                "HW type": "0x1",
+                "Mask": "*",
+                "Flags": "0x2",
+                "Device": "br-lan",
                 'HW address': '9C:20:7B:CA:A2:16',
                 'IP address': "127.0.0.1",
                 }
 
-        utilities.normalise_keys(data)
+        data = utilities.normalise_keys(data)
 
-        assert data[OpenWrtConstants.MODERN_KEYS["HW address"]] == '9C:20:7B:CA:A2:16'
-        assert data[OpenWrtConstants.MODERN_KEYS["IP address"]] == '127.0.0.1'
-        assert data['stale'] == True
-        assert data['dev'] == 'br-lan'
+        assert data[OpenWrtConstants.MODERN_KEYS["HW_address"]] == '9C:20:7B:CA:A2:16'
+        assert data[OpenWrtConstants.MODERN_KEYS["IP_address"]] == '127.0.0.1'
+        assert data['HW_type'] == "0x1"
+        assert data['Mask'] == "*"
+        assert data['Flags'] == "0x2"
+        assert data['Device'] == "br-lan"

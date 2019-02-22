@@ -13,9 +13,10 @@ class OpenWrtConstants:
     LUCI_RPC_IP_PATH = '{}/cgi-bin/luci/rpc/ip'
 
     # Make old and new keys consistent for 17 & 18 releases
+    # Spaces and dots are removed so keep them out of here also.
     MODERN_KEYS = {
-        "HW address": "mac",
-        "IP address": "ipaddress",
+        "HW_address": "mac",
+        "IP_address": "ipaddress",
         "dest": "ipaddress"
     }
 
