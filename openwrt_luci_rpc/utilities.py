@@ -1,4 +1,4 @@
-from .constants import OpenWrtConstants
+from .constants import Constants
 import logging
 
 log = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ def normalise_keys(result):
     result = \
         {k.replace(".", "_").replace(" ", "_"): v for k, v in result.items()}
 
-    for old_key, new_key in OpenWrtConstants.MODERN_KEYS.items():
+    for old_key, new_key in Constants.MODERN_KEYS.items():
         if old_key in result:
             result[new_key] = result[old_key]
             del result[old_key]

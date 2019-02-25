@@ -12,7 +12,7 @@ To install openwrt-luci-rpc, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install openwrt_luci_rpc
+   pip install openwrt-luci-rpc
 
 This is the preferred method to install openwrt-luci-rpc, as it will always install the most recent stable release.
 

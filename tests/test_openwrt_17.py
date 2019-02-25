@@ -6,7 +6,7 @@
 
 import unittest
 from openwrt_luci_rpc import utilities
-from openwrt_luci_rpc.constants import OpenWrtConstants
+from openwrt_luci_rpc.constants import Constants
 
 
 class TestOpenwrtLuciRPC(unittest.TestCase):
@@ -32,8 +32,8 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
 
         data = utilities.normalise_keys(data)
 
-        assert data[OpenWrtConstants.MODERN_KEYS["HW_address"]] == '9C:20:7B:CA:A2:16'
-        assert data[OpenWrtConstants.MODERN_KEYS["IP_address"]] == '127.0.0.1'
+        assert data[Constants.MODERN_KEYS["HW_address"]] == '9C:20:7B:CA:A2:16'
+        assert data[Constants.MODERN_KEYS["IP_address"]] == '127.0.0.1'
         assert data['HW_type'] == "0x1"
         assert data['Mask'] == "*"
         assert data['Flags'] == "0x2"

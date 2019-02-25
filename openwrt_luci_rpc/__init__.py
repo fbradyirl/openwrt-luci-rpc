@@ -7,7 +7,7 @@ __email__ = 'fbradyirl@github.io'
 __version__ = '1.0.5'
 
 from .openwrt_luci_rpc import OpenWrtLuciRPC
-from .constants import OpenWrtConstants
+from .constants import Constants
 
 
 class OpenWrtRpc:
@@ -15,10 +15,10 @@ class OpenWrtRpc:
     Class to interact with OpenWrt router running luci-mod-rpc package.
     """
 
-    def __init__(self, host_url=OpenWrtConstants.DEFAULT_LOCAL_HOST,
-                 username=OpenWrtConstants.DEFAULT_USERNAME,
-                 password=OpenWrtConstants.DEFAULT_PASSWORD,
-                 is_https=OpenWrtConstants.DEFAULT_HTTPS):
+    def __init__(self, host_url=Constants.DEFAULT_LOCAL_HOST,
+                 username=Constants.DEFAULT_USERNAME,
+                 password=Constants.DEFAULT_PASSWORD,
+                 is_https=Constants.DEFAULT_HTTPS):
         """
         Initiate an instance with a default local ip (192.168.1.1)
         :param host_url: string - host url. Defaults to 192.168.1.1
@@ -31,7 +31,9 @@ class OpenWrtRpc:
         """Returns true if a token has been aquired"""
         return self.router.token is not None
 
-    def get_all_connected_devices(self, only_reachable=True):
+    def get_all_connected_devices(self,
+                                  only_reachable=Constants.DEFAULT_ONLY_REACH,
+                                  wlan_interfaces=Constants.DEFAULT_WLAN_IF):
         """Get details of all devices"""
         return self.router.get_all_connected_devices(
-            only_reachable=only_reachable)
+            only_reachable=only_reachable, wlan_interfaces=wlan_interfaces)

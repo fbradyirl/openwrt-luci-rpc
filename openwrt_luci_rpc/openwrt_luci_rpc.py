@@ -13,7 +13,7 @@ import logging
 
 from collections import namedtuple
 from openwrt_luci_rpc import utilities
-from .constants import OpenWrtConstants
+from .constants import Constants
 from .exceptions import InvalidLuciTokenError, \
     LuciRpcMethodNotFoundError, InvalidLuciLoginError, \
     LuciRpcUnknownError, PageNotFoundError, LuciConfigError
@@ -49,7 +49,7 @@ class OpenWrtLuciRPC:
 
     def _refresh_token(self):
         """Get authentication token for the given configuration."""
-        auth_url = OpenWrtConstants.\
+        auth_url = Constants.\
             LUCI_RPC_LOGIN_PATH.format(self.host_api_url)
         self.token = self._call_json_rpc(auth_url, 'login',
                                          self.username, self.password)
@@ -62,9 +62,9 @@ class OpenWrtLuciRPC:
         :return: tuple, with True if legacy and the URL to
                 use to lookup devices
         """
-        rpc_sys_call = OpenWrtConstants.\
+        rpc_sys_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
-        rpc_ip_call = OpenWrtConstants.\
+        rpc_ip_call = Constants.\
             LUCI_RPC_IP_PATH.format(
                 self.host_api_url), 'neighbors', {"family": 4}
         try:
@@ -78,7 +78,7 @@ class OpenWrtLuciRPC:
         log.info('Determined a 18.06 or newer build of OpenWrt')
         return False, rpc_ip_call
 
-    def get_all_connected_devices(self, only_reachable):
+    def get_all_connected_devices(self, only_reachable, wlan_interfaces):
         """
         Get details of all connected devices.
 
@@ -98,7 +98,7 @@ class OpenWrtLuciRPC:
         """
         log.info("Checking for connected devices")
         last_results = []
-        rpc_uci_call = OpenWrtConstants.LUCI_RPC_UCI_PATH.format(
+        rpc_uci_call = Constants.LUCI_RPC_UCI_PATH.format(
             self.host_api_url), 'get_all', 'dhcp'
 
         try:
@@ -109,32 +109,31 @@ class OpenWrtLuciRPC:
             self._refresh_token()
             return self.get_all_connected_devices()
 
-        if result:
-            for device_entry in result:
-                device_entry = utilities.normalise_keys(device_entry)
+        for device_entry in result:
+            device_entry = utilities.normalise_keys(device_entry)
 
-                if "mac" not in device_entry:
+            if "mac" not in device_entry:
+                continue
+
+            device_entry['hostname'] = utilities.get_hostname_from_dhcp(
+                dhcp_result, device_entry['mac'])
+
+            # As a convenience, add the router IP as the host
+            # for every device. Can be useful when a network has more
+            # than one router.
+            if "host" not in device_entry:
+                device_entry['host'] = self.host
+
+            device = namedtuple("Device", device_entry.keys())(
+                *device_entry.values())
+
+            if "Flags" in device_entry and only_reachable:
+                # Check if the Flags for each device contain
+                # NUD_REACHABLE and if not, skip.
+                if not int(device_entry['Flags'], 16) & 0x2:
                     continue
 
-                device_entry['hostname'] = utilities.get_hostname_from_dhcp(
-                    dhcp_result, device_entry['mac'])
-
-                # As a convenience, as the router IP as the host
-                # for every device. Can be useful when a network has more
-                # than one router.
-                if "host" not in device_entry:
-                    device_entry['host'] = self.host
-
-                device = namedtuple("Device", device_entry.keys())(
-                    *device_entry.values())
-
-                if "Flags" in device_entry and only_reachable:
-                    # Check if the Flags for each device contain
-                    # NUD_REACHABLE and if not, skip.
-                    if not int(device_entry['Flags'], 16) & 0x2:
-                        continue
-
-                last_results.append(device)
+            last_results.append(device)
 
         log.debug(last_results)
         return last_results
@@ -146,7 +145,7 @@ class OpenWrtLuciRPC:
         log.info("_call_json_rpc : %s" % url)
         res = self.session.post(url,
                                 data=data,
-                                timeout=OpenWrtConstants.DEFAULT_TIMEOUT,
+                                timeout=Constants.DEFAULT_TIMEOUT,
                                 **kwargs)
 
         if res.status_code == 200:
@@ -189,5 +188,4 @@ class OpenWrtLuciRPC:
                                     "installed package "
                                     "`luci-mod-rpc`." % url)
 
-        else:
-            raise LuciRpcUnknownError("Invalid response from luci: %s", res)
+        raise LuciRpcUnknownError("Invalid response from luci: %s", res)

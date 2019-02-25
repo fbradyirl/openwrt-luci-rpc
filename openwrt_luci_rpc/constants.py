@@ -1,10 +1,12 @@
-class OpenWrtConstants:
+class Constants:
 
     DEFAULT_LOCAL_HOST = "192.168.1.1"
     DEFAULT_USERNAME = "root"
     DEFAULT_PASSWORD = ""
     DEFAULT_TIMEOUT = 30
     DEFAULT_HTTPS = False
+    DEFAULT_ONLY_REACH = True
+    DEFAULT_WLAN_IF = ['wlan0-1']
 
     LUCI_RPC_LOGIN_PATH = '{}/cgi-bin/luci/rpc/auth'
     LUCI_RPC_SYS_PATH = '{}/cgi-bin/luci/rpc/sys'

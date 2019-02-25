@@ -9,7 +9,7 @@ import requests
 from unittest.mock import Mock, patch
 
 from openwrt_luci_rpc import OpenWrtRpc
-from openwrt_luci_rpc.constants import OpenWrtConstants
+from openwrt_luci_rpc.constants import Constants
 from openwrt_luci_rpc import utilities
 from openwrt_luci_rpc.exceptions import LuciConfigError
 
@@ -48,9 +48,9 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         mock_post.return_value.json.return_value = json_result
 
         runner = OpenWrtRpc()
-        assert runner.router.host_api_url == '{}://{}'.format("http", OpenWrtConstants.DEFAULT_LOCAL_HOST)
-        assert runner.router.username == OpenWrtConstants.DEFAULT_USERNAME
-        assert runner.router.password == OpenWrtConstants.DEFAULT_PASSWORD
+        assert runner.router.host_api_url == '{}://{}'.format("http", Constants.DEFAULT_LOCAL_HOST)
+        assert runner.router.username == Constants.DEFAULT_USERNAME
+        assert runner.router.password == Constants.DEFAULT_PASSWORD
 
     def test_normalise_key_stripping(self):
         """Test replacing dots and spaces works."""
