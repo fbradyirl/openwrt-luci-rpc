@@ -62,7 +62,7 @@ class OpenWrtLuciRPC:
         :return: tuple, with True if legacy and the URL to
                 use to lookup devices
         """
-        rpc_sys_call = Constants.\
+        rpc_sys_arp_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
         rpc_ip_call = Constants.\
             LUCI_RPC_IP_PATH.format(
@@ -73,7 +73,7 @@ class OpenWrtLuciRPC:
         except PageNotFoundError:
             # This is normal for older OpenWrt (pre-18.06)
             log.info('Determined a pre-18.06 build of OpenWrt')
-            return True, rpc_sys_call
+            return True, rpc_sys_arp_call
 
         log.info('Determined a 18.06 or newer build of OpenWrt')
         return False, rpc_ip_call
@@ -98,18 +98,23 @@ class OpenWrtLuciRPC:
         """
         log.info("Checking for connected devices")
         last_results = []
+        rpc_sys__winfo_call = Constants.\
+            LUCI_RPC_SYS_PATH.format(self.host_api_url), \
+                              'wifi.getiwinfo', wlan_interfaces
         rpc_uci_call = Constants.LUCI_RPC_UCI_PATH.format(
             self.host_api_url), 'get_all', 'dhcp'
 
         try:
-            result = self._call_json_rpc(*self.arp_call)
+            # First, try find the associated wifi devices
+            winfo_result = self._call_json_rpc(*rpc_sys__winfo_call)
+            arp_result = self._call_json_rpc(*self.arp_call)
             dhcp_result = self._call_json_rpc(*rpc_uci_call)
         except InvalidLuciTokenError:
             log.info("Refreshing login token")
             self._refresh_token()
             return self.get_all_connected_devices()
 
-        for device_entry in result:
+        for device_entry in arp_result:
             device_entry = utilities.normalise_keys(device_entry)
 
             if "mac" not in device_entry:
