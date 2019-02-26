@@ -74,14 +74,19 @@ History
 * Take SSL param in init now
 * Fix some typos
 
-1.0.5 (2019-02-22)
+1.0.5 (2019-02-24)
 ------------------
 
 * As a convenience, as the router IP as the host
   for every device. Can be useful when a network has more
   than one router. 
 
-1.0.6 (2019-02-22)
+1.0.6 (2019-02-26)
+------------------
+
+* Only a docs update.
+
+1.0.7 (2019-02-26)
 ------------------
 
 * Only a docs update.

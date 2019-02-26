@@ -19,7 +19,7 @@ Python3 module for interacting with the OpenWrt Luci RPC interface
 
 -  Free software: Apache Software License 2.0
 -  Documentation: `https://openwrt-luci-rpc.readthedocs.io`_.
--  LuaDoc for the Luci RPC APIs: `https://htmlpreview.github.io/?https://raw.githubusercontent.com/openwrt/luci/master/documentation/api/index.html`_.
+-  LuaDoc for the `Luci RPC APIs`_.
 
 Features
 --------
@@ -34,5 +34,6 @@ Development
 
 See `contributing guide`_.
 
+.. _`Luci RPC APIs`: https://htmlpreview.github.io/?https://raw.githubusercontent.com/openwrt/luci/master/documentation/api/index.html
 .. _`https://openwrt-luci-rpc.readthedocs.io`: https://openwrt-luci-rpc.readthedocs.io
 .. _contributing guide: CONTRIBUTING.rst
