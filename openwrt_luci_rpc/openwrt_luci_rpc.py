@@ -98,15 +98,15 @@ class OpenWrtLuciRPC:
         """
         log.info("Checking for connected devices")
         last_results = []
-        rpc_sys__winfo_call = Constants.\
-            LUCI_RPC_SYS_PATH.format(self.host_api_url), \
-                              'wifi.getiwinfo', wlan_interfaces
+        # rpc_sys__winfo_call = Constants.\
+        #     LUCI_RPC_SYS_PATH.format(self.host_api_url), \
+        #                       'wifi.getiwinfo', wlan_interfaces
         rpc_uci_call = Constants.LUCI_RPC_UCI_PATH.format(
             self.host_api_url), 'get_all', 'dhcp'
 
         try:
             # First, try find the associated wifi devices
-            winfo_result = self._call_json_rpc(*rpc_sys__winfo_call)
+            # winfo_result = self._call_json_rpc(*rpc_sys__winfo_call)
             arp_result = self._call_json_rpc(*self.arp_call)
             dhcp_result = self._call_json_rpc(*rpc_uci_call)
         except InvalidLuciTokenError:
