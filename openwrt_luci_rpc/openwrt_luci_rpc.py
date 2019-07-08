@@ -147,6 +147,10 @@ class OpenWrtLuciRPC:
         """Perform one JSON RPC operation."""
         data = json.dumps({'method': method, 'params': args})
 
+        # pass token to make it work with version < 17
+        if self.token is not None:
+            url += "?auth=" + self.token
+
         log.info("_call_json_rpc : %s" % url)
         res = self.session.post(url,
                                 data=data,

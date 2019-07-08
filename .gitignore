@@ -105,3 +105,6 @@ ENV/
 .idea/
 .vscode/settings.json
 config.py
+
+#vscode 
+.vscode/
