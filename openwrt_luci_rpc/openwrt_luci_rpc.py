@@ -11,6 +11,7 @@ import requests
 import json
 import logging
 
+from packaging import version
 from collections import namedtuple
 from openwrt_luci_rpc import utilities
 from .constants import Constants
@@ -43,6 +44,7 @@ class OpenWrtLuciRPC:
         self.password = password
         self.session = requests.Session()
         self.token = None
+        self.owrt_version = None
         self._refresh_token()
         self.is_legacy_version, self.arp_call \
             = self._determine_if_legacy_version()
@@ -62,21 +64,22 @@ class OpenWrtLuciRPC:
         :return: tuple, with True if legacy and the URL to
                 use to lookup devices
         """
+        rcp_sys_version_call = Constants.LUCI_RPC_SYS_PATH.format(self.host_api_url), "exec"
+
+        content = self._call_json_rpc(*rcp_sys_version_call, "cat /etc/openwrt_version")
+        self.owrt_version = version.parse(content.strip())
+
         rpc_sys_arp_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
         rpc_ip_call = Constants.\
             LUCI_RPC_IP_PATH.format(
                 self.host_api_url), 'neighbors', {"family": 4}
-        try:
-            # Newer OpenWrt releases (18.06+)
-            self._call_json_rpc(*rpc_ip_call)
-        except PageNotFoundError:
-            # This is normal for older OpenWrt (pre-18.06)
-            log.info('Determined a pre-18.06 build of OpenWrt')
-            return True, rpc_sys_arp_call
 
-        log.info('Determined a 18.06 or newer build of OpenWrt')
-        return False, rpc_ip_call
+        if self.owrt_version < version.parse("18.06"):
+            return True, rpc_sys_arp_call
+        else:
+            return False, rpc_ip_call
+
 
     def get_all_connected_devices(self, only_reachable, wlan_interfaces):
         """
@@ -147,7 +150,7 @@ class OpenWrtLuciRPC:
         """Perform one JSON RPC operation."""
         data = json.dumps({'method': method, 'params': args})
 
-        # pass token to make it work with version < 17
+        # pass token to make it work with versions < 17
         if self.token is not None:
             url += "?auth=" + self.token
 

@@ -16,8 +16,5 @@ class TestOpenwrt15LuciRPC(unittest.TestCase):
         assert devices is not None
 
 
-
-
-
 if __name__ == '__main__':
     unittest.main()
