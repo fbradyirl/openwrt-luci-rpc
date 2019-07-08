@@ -103,3 +103,5 @@ ENV/
 
 # pycharm
 .idea/
+.vscode/settings.json
+config.py
