@@ -5,7 +5,6 @@
 
 
 import unittest
-import requests
 from unittest.mock import Mock, patch
 
 from openwrt_luci_rpc import OpenWrtRpc
@@ -71,4 +70,3 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         assert data['_name'] == "cfg07ee1"
         assert data['_type'] == "host"
         assert data['ip'] == "192.168.1.124"
-

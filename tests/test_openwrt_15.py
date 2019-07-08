@@ -5,12 +5,14 @@
 
 import unittest
 import config
-from openwrt_luci_rpc.openwrt_luci_rpc import utilities, OpenWrtLuciRPC
-from openwrt_luci_rpc.constants import Constants
+from openwrt_luci_rpc.openwrt_luci_rpc import OpenWrtLuciRPC
+
 
 class TestOpenwrt15LuciRPC(unittest.TestCase):
+
     def testDiscover(self):
-        router = OpenWrtLuciRPC(config.host, config.username, config.password, config.is_https)
+        router = OpenWrtLuciRPC(config.host, config.username,
+                                config.password, config.is_https)
 
         devices = router.get_all_connected_devices(False, False)
         assert devices is not None

@@ -64,9 +64,11 @@ class OpenWrtLuciRPC:
         :return: tuple, with True if legacy and the URL to
                 use to lookup devices
         """
-        rcp_sys_version_call = Constants.LUCI_RPC_SYS_PATH.format(self.host_api_url), "exec"
+        rcp_sys_version_call = Constants.\
+            LUCI_RPC_SYS_PATH.format(self.host_api_url), "exec"
 
-        content = self._call_json_rpc(*rcp_sys_version_call, "cat /etc/openwrt_version")
+        content = self._call_json_rpc(*rcp_sys_version_call,
+                                      "cat /etc/openwrt_version")
         self.owrt_version = version.parse(content.strip())
 
         rpc_sys_arp_call = Constants.\
@@ -79,7 +81,6 @@ class OpenWrtLuciRPC:
             return True, rpc_sys_arp_call
         else:
             return False, rpc_ip_call
-
 
     def get_all_connected_devices(self, only_reachable, wlan_interfaces):
         """
