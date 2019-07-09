@@ -64,12 +64,28 @@ class OpenWrtLuciRPC:
         :return: tuple, with True if legacy and the URL to
                 use to lookup devices
         """
+
+        # NEW METHOD TO DETERMINE OPENWRT VERSION EXACTLY
+        # TODO: Check as non-root user
+
+        log.info("getting openwrt version")
+
         rcp_sys_version_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), "exec"
 
-        content = self._call_json_rpc(*rcp_sys_version_call,
-                                      "cat /etc/openwrt_version")
-        self.owrt_version = version.parse(content.strip())
+        try:
+            content = self._call_json_rpc(*rcp_sys_version_call,
+                                          "cat /etc/openwrt_version")
+
+            if content is None:
+                raise LuciRpcUnknownError("could not \
+                determine openwrt version")
+
+            self.owrt_version = version.parse(content.strip())
+        except InvalidLuciLoginError:
+            log.info("Refreshing login token")
+            self._refresh_token()
+            return self._determine_if_legacy_version()
 
         rpc_sys_arp_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
