@@ -65,10 +65,21 @@ class OpenWrtLuciRPC:
                 use to lookup devices
         """
 
+        log.info("Getting OpenWRT version")
+
         # NEW METHOD TO DETERMINE OPENWRT VERSION EXACTLY
         # TODO: Check as non-root user
 
-        log.info("getting openwrt version")
+        # get VERSION_ID from os-release if exists or get
+        # DISTRIB_RELEASE from openwrt_release
+        shell_command = "if [ -f \"/etc/os-release\" ]; \
+                            then awk -F= '$1==\"VERSION_ID\" \
+                            { print $2 ;}' \
+                            /etc/os-release; \
+                            else awk -F= '$1==\"DISTRIB_RELEASE\" \
+                            { print $2 ;}' \
+                            /etc/openwrt_release; fi | \
+                            tr -d \\'\\\""
 
         rcp_sys_version_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), "exec"
@@ -76,7 +87,9 @@ class OpenWrtLuciRPC:
         try:
             content = self._call_json_rpc(rcp_sys_version_call[0],
                                           rcp_sys_version_call[1],
-                                          "cat /etc/openwrt_version")
+                                          shell_command)   # type: str
+
+            content = content.replace("\n", "")
 
             if content is None:
                 raise LuciRpcUnknownError("could not \
@@ -87,6 +100,10 @@ class OpenWrtLuciRPC:
             log.info("Refreshing login token")
             self._refresh_token()
             return self._determine_if_legacy_version()
+        except Exception:
+            log.error("Could not determine OpenWRT version, \
+                         defaulting to version 18.06")
+            self.owrt_version = version.parse("18.06")
 
         rpc_sys_arp_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
