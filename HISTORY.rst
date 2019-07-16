@@ -90,3 +90,9 @@ History
 ------------------
 
 * Only a docs update.
+
+
+1.1.0 (2019-07-16)
+------------------
+
+* Compatibility with 15.05.
