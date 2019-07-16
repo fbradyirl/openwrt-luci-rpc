@@ -74,7 +74,8 @@ class OpenWrtLuciRPC:
             LUCI_RPC_SYS_PATH.format(self.host_api_url), "exec"
 
         try:
-            content = self._call_json_rpc(*rcp_sys_version_call,
+            content = self._call_json_rpc(rcp_sys_version_call[0],
+                                          rcp_sys_version_call[1],
                                           "cat /etc/openwrt_version")
 
             if content is None:

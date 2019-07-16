@@ -11,6 +11,7 @@ from openwrt_luci_rpc.openwrt_luci_rpc import OpenWrtLuciRPC
 class TestOpenwrt15LuciRPC(unittest.TestCase):
 
     def testDiscover(self):
+        # HOST, USER, PASSWORD,[HTTPS] must be in env variables in order to run the test
         assert "HOST" in os.environ
         assert "USER" in os.environ
         assert "PASSWORD" in os.environ
