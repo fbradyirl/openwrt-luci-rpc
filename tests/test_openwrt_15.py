@@ -4,16 +4,18 @@
 """Tests for `openwrt_luci_rpc` package."""
 
 import unittest
-import config
+import os
 from openwrt_luci_rpc.openwrt_luci_rpc import OpenWrtLuciRPC
 
 
 class TestOpenwrt15LuciRPC(unittest.TestCase):
 
     def testDiscover(self):
-        router = OpenWrtLuciRPC(config.host, config.username,
-                                config.password, config.is_https)
+        assert "HOST" in os.environ
+        assert "USER" in os.environ
+        assert "PASSWORD" in os.environ
 
+        router = OpenWrtLuciRPC(os.getenv("HOST"), os.getenv("USER"), os.getenv("PASSWORD"), os.getenv("HTTPS", "False") == "True")
         devices = router.get_all_connected_devices(False, False)
         assert devices is not None
 
