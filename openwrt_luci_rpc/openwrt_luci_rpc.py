@@ -11,6 +11,7 @@ import requests
 import json
 import logging
 
+from packaging import version
 from collections import namedtuple
 from openwrt_luci_rpc import utilities
 from .constants import Constants
@@ -43,6 +44,7 @@ class OpenWrtLuciRPC:
         self.password = password
         self.session = requests.Session()
         self.token = None
+        self.owrt_version = None
         self._refresh_token()
         self.is_legacy_version, self.arp_call \
             = self._determine_if_legacy_version()
@@ -62,21 +64,57 @@ class OpenWrtLuciRPC:
         :return: tuple, with True if legacy and the URL to
                 use to lookup devices
         """
+
+        log.info("Getting OpenWRT version")
+
+        # NEW METHOD TO DETERMINE OPENWRT VERSION EXACTLY
+        # TODO: Check as non-root user
+
+        # get VERSION_ID from os-release if exists or get
+        # DISTRIB_RELEASE from openwrt_release
+        shell_command = "if [ -f \"/etc/os-release\" ]; \
+                            then awk -F= '$1==\"VERSION_ID\" \
+                            { print $2 ;}' \
+                            /etc/os-release; \
+                            else awk -F= '$1==\"DISTRIB_RELEASE\" \
+                            { print $2 ;}' \
+                            /etc/openwrt_release; fi | \
+                            tr -d \\'\\\""
+
+        rcp_sys_version_call = Constants.\
+            LUCI_RPC_SYS_PATH.format(self.host_api_url), "exec"
+
+        try:
+            content = self._call_json_rpc(rcp_sys_version_call[0],
+                                          rcp_sys_version_call[1],
+                                          shell_command)   # type: str
+
+            content = content.replace("\n", "")
+
+            if content is None:
+                raise LuciRpcUnknownError("could not \
+                determine openwrt version")
+
+            self.owrt_version = version.parse(content.strip())
+        except InvalidLuciLoginError:
+            log.info("Refreshing login token")
+            self._refresh_token()
+            return self._determine_if_legacy_version()
+        except Exception:
+            log.error("Could not determine OpenWRT version, \
+                         defaulting to version 18.06")
+            self.owrt_version = version.parse("18.06")
+
         rpc_sys_arp_call = Constants.\
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
         rpc_ip_call = Constants.\
             LUCI_RPC_IP_PATH.format(
                 self.host_api_url), 'neighbors', {"family": 4}
-        try:
-            # Newer OpenWrt releases (18.06+)
-            self._call_json_rpc(*rpc_ip_call)
-        except PageNotFoundError:
-            # This is normal for older OpenWrt (pre-18.06)
-            log.info('Determined a pre-18.06 build of OpenWrt')
-            return True, rpc_sys_arp_call
 
-        log.info('Determined a 18.06 or newer build of OpenWrt')
-        return False, rpc_ip_call
+        if self.owrt_version < version.parse("18.06"):
+            return True, rpc_sys_arp_call
+        else:
+            return False, rpc_ip_call
 
     def get_all_connected_devices(self, only_reachable, wlan_interfaces):
         """
@@ -146,6 +184,10 @@ class OpenWrtLuciRPC:
     def _call_json_rpc(self, url, method, *args, **kwargs):
         """Perform one JSON RPC operation."""
         data = json.dumps({'method': method, 'params': args})
+
+        # pass token to make it work with versions < 17
+        if self.token is not None:
+            url += "?auth=" + self.token
 
         log.info("_call_json_rpc : %s" % url)
         res = self.session.post(url,

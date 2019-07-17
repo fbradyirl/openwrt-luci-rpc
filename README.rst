@@ -26,7 +26,7 @@ Features
 
 -  Allows you to use the Luci RPC interface to fetch connected devices
    on your OpenWrt based router.
--  Supports 17.X & 18.X or newer releases of OpenWrt.
+-  Supports 15.X & 17.X & 18.X or newer releases of OpenWrt.
 
 
 Development
