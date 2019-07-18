@@ -16,15 +16,16 @@ class TestOpenwrt15LuciRPC(unittest.TestCase):
     def tearDown(self):
         """Tear down test fixtures, if any."""
 
-    # def testDiscover(self):
+    @unittest.skip("unskip this to test using env vars")
+    def testDiscover(self):
         # HOST, USER, PASSWORD,[HTTPS] must be in env variables in order to run the test
-        # assert "HOST" in os.environ
-        # assert "USER" in os.environ
-        # assert "PASSWORD" in os.environ
+        assert "HOST" in os.environ
+        assert "USER" in os.environ
+        assert "PASSWORD" in os.environ
 
-        # router = OpenWrtLuciRPC(os.getenv("HOST"), os.getenv("USER"), os.getenv("PASSWORD"), os.getenv("HTTPS", "False") == "True")
-        # devices = router.get_all_connected_devices(False, False)
-        # assert devices is not None
+        router = OpenWrtLuciRPC(os.getenv("HOST"), os.getenv("USER"), os.getenv("PASSWORD"), os.getenv("HTTPS", "False") == "True")
+        devices = router.get_all_connected_devices(False, False)
+        assert devices is not None
 
 
 if __name__ == '__main__':
