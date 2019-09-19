@@ -96,3 +96,10 @@ History
 ------------------
 
 * Compatibility with 15.05.
+
+
+1.1.1 (2019-09-19)
+------------------
+
+* Adding packaging dependancy.
+
