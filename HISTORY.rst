@@ -103,3 +103,10 @@ History
 
 * Adding packaging dependancy.
 
+1.1.2 (2019-10-11)
+------------------
+
+* Add option to enable or disable HTTPS verification.
+* Suppress "InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised." warnings.
+* Reduce number of info log messages.
+* Minor code clean-up to address flake8 warnings.

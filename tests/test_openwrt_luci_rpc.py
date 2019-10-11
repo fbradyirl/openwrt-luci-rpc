@@ -47,7 +47,10 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         mock_post.return_value.json.return_value = json_result
 
         runner = OpenWrtRpc()
-        assert runner.router.host_api_url == '{}://{}'.format("http", Constants.DEFAULT_LOCAL_HOST)
+        assert runner.router.host_api_url == '{}://{}'.format(
+                    "http",
+                    Constants.DEFAULT_LOCAL_HOST
+                )
         assert runner.router.username == Constants.DEFAULT_USERNAME
         assert runner.router.password == Constants.DEFAULT_PASSWORD
 

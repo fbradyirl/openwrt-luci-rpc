@@ -13,6 +13,7 @@ import logging
 
 from packaging import version
 from collections import namedtuple
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from openwrt_luci_rpc import utilities
 from .constants import Constants
 from .exceptions import InvalidLuciTokenError, \
@@ -24,12 +25,14 @@ log = logging.getLogger(__name__)
 
 class OpenWrtLuciRPC:
 
-    def __init__(self, host, username, password, is_https):
+    def __init__(self, host, username, password, is_https, verify_https):
         """
         Initiate an API request with all parameters
         :param host: string
         :param username: string
         :param password: string
+        :param is_https: boolean
+        :param verify_https: boolean
         """
 
         if not host:
@@ -37,11 +40,21 @@ class OpenWrtLuciRPC:
                                   'Use the IP or hostname of your'
                                   'OpenWrt router')
 
-        protocol = 'http' if not is_https else 'https'
+        if not is_https:
+            protocol = 'http'
+        else:
+            protocol = 'https'
+
+            if not verify_https:
+                requests.packages.urllib3.disable_warnings(
+                    InsecureRequestWarning
+                )
+
         self.host = host
         self.host_api_url = '{}://{}'.format(protocol, host)
         self.username = username
         self.password = password
+        self.verify_https = verify_https
         self.session = requests.Session()
         self.token = None
         self.owrt_version = None
@@ -134,7 +147,7 @@ class OpenWrtLuciRPC:
                does not have a proper ability to determine
                this, as above)
         """
-        log.info("Checking for connected devices")
+        log.debug("Checking for connected devices")
         last_results = []
         # rpc_sys__winfo_call = Constants.\
         #     LUCI_RPC_SYS_PATH.format(self.host_api_url), \
@@ -189,10 +202,11 @@ class OpenWrtLuciRPC:
         if self.token is not None:
             url += "?auth=" + self.token
 
-        log.info("_call_json_rpc : %s" % url)
+        log.debug("_call_json_rpc : %s" % url)
         res = self.session.post(url,
                                 data=data,
                                 timeout=Constants.DEFAULT_TIMEOUT,
+                                verify=self.verify_https,
                                 **kwargs)
 
         if res.status_code == 200:
