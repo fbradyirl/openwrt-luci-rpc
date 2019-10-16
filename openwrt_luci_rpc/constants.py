@@ -5,6 +5,7 @@ class Constants:
     DEFAULT_PASSWORD = ""
     DEFAULT_TIMEOUT = 30
     DEFAULT_HTTPS = False
+    DEFAULT_VERIFY_HTTPS = True
     DEFAULT_ONLY_REACH = True
     DEFAULT_WLAN_IF = ['wlan0-1']
 

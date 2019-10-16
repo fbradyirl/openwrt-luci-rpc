@@ -10,4 +10,5 @@ Development Lead
 Contributors
 ------------
 
-None yet. Why not be the first?
+* `Miroslav Zdrale`_
+.. _`Miroslav Zdrale`: https://github.com/mzdrale
