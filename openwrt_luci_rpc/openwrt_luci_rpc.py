@@ -129,7 +129,7 @@ class OpenWrtLuciRPC:
         else:
             return False, rpc_ip_call
 
-    def get_all_connected_devices(self, only_reachable, wlan_interfaces):
+    def get_all_connected_devices(self, only_reachable, arp, wifi, wlan_interface):
         """
         Get details of all connected devices.
 
@@ -149,16 +149,21 @@ class OpenWrtLuciRPC:
         """
         log.debug("Checking for connected devices")
         last_results = []
-        # rpc_sys__winfo_call = Constants.\
-        #     LUCI_RPC_SYS_PATH.format(self.host_api_url), \
-        #                       'wifi.getiwinfo', wlan_interfaces
+        if wifi:
+            rpc_sys__winfo_call = Constants.\
+                LUCI_RPC_SYS_PATH.format(self.host_api_url), \
+                    'wifi.getiwinfo', wlan_interface
+                                
         rpc_uci_call = Constants.LUCI_RPC_UCI_PATH.format(
             self.host_api_url), 'get_all', 'dhcp'
 
+        winfo_result = {}
+        arp_result = [] 
         try:
-            # First, try find the associated wifi devices
-            # winfo_result = self._call_json_rpc(*rpc_sys__winfo_call)
-            arp_result = self._call_json_rpc(*self.arp_call)
+            if wifi:
+                winfo_result = self._call_json_rpc(*rpc_sys__winfo_call)
+            if arp:
+                arp_result = self._call_json_rpc(*self.arp_call)
             dhcp_result = self._call_json_rpc(*rpc_uci_call)
         except InvalidLuciTokenError:
             log.info("Refreshing login token")
@@ -171,8 +176,8 @@ class OpenWrtLuciRPC:
             if "mac" not in device_entry:
                 continue
 
-            device_entry['hostname'] = utilities.get_hostname_from_dhcp(
-                dhcp_result, device_entry['mac'])
+            device_entry['hostname'] = utilities.get_key_from_dhcp(
+                dhcp_result, device_entry['mac'], 'name')
 
             # As a convenience, add the router IP as the host
             # for every device. Can be useful when a network has more
@@ -188,8 +193,28 @@ class OpenWrtLuciRPC:
                 # NUD_REACHABLE and if not, skip.
                 if not int(device_entry['Flags'], 16) & 0x2:
                     continue
+                    
+            device_entry['type'] = 'arp'
 
             last_results.append(device)
+            
+        if 'assoclist' in winfo_result:
+            for mac, device_entry in winfo_result['assoclist'].items():
+                device_entry['mac'] = mac
+                device_entry['host'] = self.host
+                device_entry['type'] = 'wifi'
+                device_entry['dev'] = wlan_interface
+
+                device_entry['hostname'] = utilities.get_key_from_dhcp(
+                    dhcp_result, mac, 'name')
+                    
+                device_entry['ip'] = utilities.get_key_from_dhcp(
+                    dhcp_result, mac, 'ip')
+                    
+                device = namedtuple("Device", device_entry.keys())(
+                    *device_entry.values())
+                    
+                last_results.append(device)
 
         log.debug(last_results)
         return last_results

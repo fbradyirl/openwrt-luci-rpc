@@ -20,19 +20,19 @@ def normalise_keys(result):
     return result
 
 
-def get_hostname_from_dhcp(dhcp_result, mac):
-    """Determine the hostname for this mac."""
+def get_key_from_dhcp(dhcp_result, mac, key = 'name'):
+    """Determine a key from DHCP for this mac."""
     if dhcp_result:
 
         host = [x for x in dhcp_result.values()
                 if x['.type'] == 'host'
                 and 'mac' in x
-                and 'name' in x
+                and key in x
                 and x['mac'].upper() == mac]
 
         if host:
-            log.debug("DNS name lookup for mac {} "
-                      "found {}".format(mac, host[0]['name']))
-            return host[0]['name']
+            log.debug("DHCP lookup {} for mac {} "
+                      "found {}".format(mac, key, host[0][key]))
+            return host[0][key]
 
     return None

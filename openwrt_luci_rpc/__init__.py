@@ -37,7 +37,9 @@ class OpenWrtRpc:
 
     def get_all_connected_devices(self,
                                   only_reachable=Constants.DEFAULT_ONLY_REACH,
-                                  wlan_interfaces=Constants.DEFAULT_WLAN_IF):
+                                  arp=Constants.DEFAULT_ARP,
+                                  wifi=Constants.DEFAULT_WIFI,
+                                  wlan_interface=Constants.DEFAULT_WLAN_IF):
         """Get details of all devices"""
         return self.router.get_all_connected_devices(
-            only_reachable=only_reachable, wlan_interfaces=wlan_interfaces)
+            only_reachable=only_reachable, arp=arp, wifi=wifi, wlan_interface=wlan_interface)

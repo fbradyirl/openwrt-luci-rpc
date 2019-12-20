@@ -7,7 +7,9 @@ class Constants:
     DEFAULT_HTTPS = False
     DEFAULT_VERIFY_HTTPS = True
     DEFAULT_ONLY_REACH = True
-    DEFAULT_WLAN_IF = ['wlan0-1']
+    DEFAULT_ARP = True
+    DEFAULT_WIFI = False
+    DEFAULT_WLAN_IF = 'wlan0'
 
     LUCI_RPC_LOGIN_PATH = '{}/cgi-bin/luci/rpc/auth'
     LUCI_RPC_SYS_PATH = '{}/cgi-bin/luci/rpc/sys'
