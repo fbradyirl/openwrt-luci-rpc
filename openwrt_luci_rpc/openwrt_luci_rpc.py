@@ -163,7 +163,8 @@ class OpenWrtLuciRPC:
         except InvalidLuciTokenError:
             log.info("Refreshing login token")
             self._refresh_token()
-            return self.get_all_connected_devices()
+            return self.get_all_connected_devices(only_reachable,
+                                                  wlan_interfaces)
 
         for device_entry in arp_result:
             device_entry = utilities.normalise_keys(device_entry)
