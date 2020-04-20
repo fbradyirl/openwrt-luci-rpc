@@ -124,7 +124,7 @@ class OpenWrtLuciRPC:
             LUCI_RPC_IP_PATH.format(
                 self.host_api_url), 'neighbors', {"family": 4}
 
-        if self.owrt_version < version.parse("18.06"):
+        if self.owrt_version != version.parse("snapshot") and self.owrt_version < version.parse("18.06"):
             return True, rpc_sys_arp_call
         else:
             return False, rpc_ip_call

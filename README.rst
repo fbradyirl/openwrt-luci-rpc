@@ -34,6 +34,6 @@ Development
 
 See `contributing guide`_.
 
-.. _`Luci RPC APIs`: https://htmlpreview.github.io/?https://raw.githubusercontent.com/openwrt/luci/master/documentation/api/index.html
+.. _`Luci RPC APIs`: https://htmlpreview.github.io/?https://raw.githubusercontent.com/openwrt/luci/master/docs/api/index.html
 .. _`https://openwrt-luci-rpc.readthedocs.io`: https://openwrt-luci-rpc.readthedocs.io
 .. _contributing guide: CONTRIBUTING.rst
