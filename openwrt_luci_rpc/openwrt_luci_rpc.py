@@ -124,7 +124,7 @@ class OpenWrtLuciRPC:
             LUCI_RPC_IP_PATH.format(
                 self.host_api_url), 'neighbors', {"family": 4}
 
-        if self.owrt_version != version.parse("snapshot") and self.owrt_version < version.parse("18.06"):
+        if self.owrt_version != version.parse("snapshot") and self.owrt_version < version.parse("18.06"):  # noqa: E501
             return True, rpc_sys_arp_call
         else:
             return False, rpc_ip_call
@@ -167,6 +167,9 @@ class OpenWrtLuciRPC:
                                                   wlan_interfaces)
 
         for device_entry in arp_result:
+            if device_entry is None:
+                continue
+
             device_entry = utilities.normalise_keys(device_entry)
 
             if "mac" not in device_entry:

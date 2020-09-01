@@ -121,3 +121,10 @@ History
 ------------------
 * Unpin pip versions. Allow higher. Fixes #42 https://github.com/fbradyirl/openwrt-luci-rpc/issues/42
 
+1.1.6 (2020-09-01)
+------------------
+* Fixes:
+https://github.com/home-assistant/core/issues/38870
+https://github.com/home-assistant/core/issues/39498
+https://github.com/fbradyirl/openwrt-luci-rpc/issues/33
+

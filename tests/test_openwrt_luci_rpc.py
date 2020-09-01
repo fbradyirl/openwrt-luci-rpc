@@ -73,3 +73,10 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         assert data['_name'] == "cfg07ee1"
         assert data['_type'] == "host"
         assert data['ip'] == "192.168.1.124"
+
+    def test_normalise_key_none_type(self):
+        """Test a None result is handled."""
+
+        data = utilities.normalise_keys(None)
+
+        assert data is None
