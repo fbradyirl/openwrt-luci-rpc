@@ -1,16 +1,15 @@
 language: python
 python:
-- 3.8
+- 3.6
 install: pip install -U tox-travis
 script: tox
 deploy:
   provider: pypi
-  cleanup: true
-  skip_existing: true
   distributions: sdist bdist_wheel
-  username: finbarr
-  password: m1kg/B4c9k39qltYhq85JkZDfRg0Ouc5VtWscTGmUhbhBbQpOHGjEPE8szkkzpspqe9E5Wog0E/NBWsOx5oyMkIY6eN/kGv7HaWVZgxYFbAQfvx1Cngk+JLOhCLvm+znGSy0Ol4g0H9d7nzH/lPUAegXlmmL7DAiUWEzpLmpMFS2lUdkYDCz9CZ3F3OmtVF/2YXXrOEwPLjRIwnJh2Wif019cnyy0W4Ly/zNvY/XtUL1FxS3nR4RXrj1+FLSaRXN3LC6TydpXNmblTbSKNS8B7Mb1o+q0sacqDDr3r9LFrH7YqEiYhiNn+wIxF8d9rjQ/7uwcNgWMz7cECOk33+cVmWMmfEBW10BSnibEfkXHqqkI6E+R8iZv1aM031uSea1T32VZ+AL4OhcolaHzCLoFIblXo9J7sWj7m5BRRPDVp0lp96CInCL+syUhjwsZAHNcwBavGybuHjozqslLJFchwYlZLDcUohrkgFCXPK8k0ansUJB+Pp+QejOERRFvuePxG0L2hTSSeL3yLmTfdLXOB2xhdcc2ao4CD4wlpoIzEnx4znsfjqSWHgJ5xJGiziZwKtctS7t253yuqfW7Eg6IZ2MHkYWACcnCi/OjgxRrKQPLcquWuSOvAHbSEIUJw8XhekTP86dmXOj53mdVUWH7h0ajGXCZneKDSKAhQoYKiM=
+  user: finbarr
+  password:
+    secure: m1kg/B4c9k39qltYhq85JkZDfRg0Ouc5VtWscTGmUhbhBbQpOHGjEPE8szkkzpspqe9E5Wog0E/NBWsOx5oyMkIY6eN/kGv7HaWVZgxYFbAQfvx1Cngk+JLOhCLvm+znGSy0Ol4g0H9d7nzH/lPUAegXlmmL7DAiUWEzpLmpMFS2lUdkYDCz9CZ3F3OmtVF/2YXXrOEwPLjRIwnJh2Wif019cnyy0W4Ly/zNvY/XtUL1FxS3nR4RXrj1+FLSaRXN3LC6TydpXNmblTbSKNS8B7Mb1o+q0sacqDDr3r9LFrH7YqEiYhiNn+wIxF8d9rjQ/7uwcNgWMz7cECOk33+cVmWMmfEBW10BSnibEfkXHqqkI6E+R8iZv1aM031uSea1T32VZ+AL4OhcolaHzCLoFIblXo9J7sWj7m5BRRPDVp0lp96CInCL+syUhjwsZAHNcwBavGybuHjozqslLJFchwYlZLDcUohrkgFCXPK8k0ansUJB+Pp+QejOERRFvuePxG0L2hTSSeL3yLmTfdLXOB2xhdcc2ao4CD4wlpoIzEnx4znsfjqSWHgJ5xJGiziZwKtctS7t253yuqfW7Eg6IZ2MHkYWACcnCi/OjgxRrKQPLcquWuSOvAHbSEIUJw8XhekTP86dmXOj53mdVUWH7h0ajGXCZneKDSKAhQoYKiM=
   on:
     tags: true
-    python: 3.8
+    python: 3.6
     repo: fbradyirl/openwrt-luci-rpc

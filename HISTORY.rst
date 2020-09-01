@@ -121,6 +121,7 @@ History
 ------------------
 * Unpin pip versions. Allow higher. Fixes #42 https://github.com/fbradyirl/openwrt-luci-rpc/issues/42
 
+
 1.1.6 (2020-09-01)
 ------------------
 * Fixes:
@@ -130,5 +131,10 @@ https://github.com/fbradyirl/openwrt-luci-rpc/issues/33
 
 
 1.1.7 (2020-09-01)
+------------------
+No Changes. Trying to get travis to push to pypi.
+
+
+1.1.10 (2020-09-01)
 ------------------
 No Changes. Trying to get travis to push to pypi.
