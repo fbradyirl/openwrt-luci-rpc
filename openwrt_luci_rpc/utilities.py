@@ -24,7 +24,6 @@ def normalise_keys(result):
 def get_hostname_from_dhcp(dhcp_result, mac):
     """Determine the hostname for this mac."""
     if dhcp_result is not None and isinstance(dhcp_result, dict):
-
         host = [x for x in dhcp_result.values()
                 if x['.type'] == 'host'
                 and 'mac' in x
