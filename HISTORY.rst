@@ -124,17 +124,5 @@ History
 
 1.1.6 (2020-09-01)
 ------------------
-* Fixes:
-https://github.com/home-assistant/core/issues/38870
-https://github.com/home-assistant/core/issues/39498
-https://github.com/fbradyirl/openwrt-luci-rpc/issues/33
-
-
-1.1.7 (2020-09-01)
-------------------
-No Changes. Trying to get travis to push to pypi.
-
-
-1.1.10 (2020-09-01)
-------------------
-No Changes. Trying to get travis to push to pypi.
+* Fixes home-assistant/core/issues/38870, home-assistant/core/issues/39498
+* Fixes fbradyirl/openwrt-luci-rpc/issues/33
