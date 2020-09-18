@@ -79,7 +79,7 @@ History
 
 * As a convenience, as the router IP as the host
   for every device. Can be useful when a network has more
-  than one router. 
+  than one router.
 
 1.0.6 (2019-02-26)
 ------------------
@@ -110,3 +110,19 @@ History
 * Suppress "InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised." warnings.
 * Reduce number of info log messages.
 * Minor code clean-up to address flake8 warnings.
+
+
+1.1.3 (2020-04-20)
+------------------
+* Add packaging
+
+
+1.1.5 (2020-09-01)
+------------------
+* Unpin pip versions. Allow higher. Fixes #42 https://github.com/fbradyirl/openwrt-luci-rpc/issues/42
+
+
+1.1.6 (2020-09-01)
+------------------
+* Fixes home-assistant/core/issues/38870, home-assistant/core/issues/39498
+* Fixes fbradyirl/openwrt-luci-rpc/issues/33
