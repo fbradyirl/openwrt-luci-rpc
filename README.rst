@@ -7,8 +7,8 @@ openwrt-luci-rpc
 .. image:: https://img.shields.io/pypi/v/openwrt_luci_rpc.svg
         :target: https://pypi.python.org/pypi/openwrt_luci_rpc
 
-.. image:: https://img.shields.io/travis/fbradyirl/openwrt-luci-rpc.svg
-        :target: https://travis-ci.org/fbradyirl/openwrt-luci-rpc/
+.. image:: https://github.com/fbradyirl/openwrt-luci-rpc/workflows/Python%20package/badge.svg
+        :target: https://github.com/fbradyirl/openwrt-luci-rpc/actions
 
 .. image:: https://readthedocs.org/projects/openwrt-luci-rpc/badge/?version=latest
         :target: https://openwrt-luci-rpc.readthedocs.io/en/latest/?badge=latest

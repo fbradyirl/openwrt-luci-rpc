@@ -126,3 +126,7 @@ History
 ------------------
 * Fixes home-assistant/core/issues/38870, home-assistant/core/issues/39498
 * Fixes fbradyirl/openwrt-luci-rpc/issues/33
+
+1.1.7 (2020-12-08)
+------------------
+* Switch pipeline to Github actions
