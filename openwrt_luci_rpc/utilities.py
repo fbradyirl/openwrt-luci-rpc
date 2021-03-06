@@ -1,4 +1,5 @@
 from .constants import Constants
+from packaging import version
 import logging
 
 log = logging.getLogger(__name__)
@@ -36,3 +37,10 @@ def get_hostname_from_dhcp(dhcp_result, mac):
             return host[0]['name']
 
     return None
+
+
+def is_legacy_version(owrt_version):
+    return (
+        owrt_version != version.parse("snapshot") and
+        owrt_version < version.parse("18.06")
+    )
