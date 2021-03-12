@@ -130,3 +130,8 @@ History
 1.1.7 (2020-12-08)
 ------------------
 * Switch pipeline to Github actions
+
+1.1.8 (2021-03-12)
+------------------
+* Support newer openwrt snapshot versions (#45)
+* Fix tox in github actions and also test py38 (#46)
