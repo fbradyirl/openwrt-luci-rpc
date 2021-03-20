@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 5
       matrix:
-        python-version: [3.7, "${{env.target_python_version}}"]
+        python-version: [3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v1
