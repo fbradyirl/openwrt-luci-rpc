@@ -1,6 +1,13 @@
 name: Python package
 
-on: [push, pull_request]
+on:
+  # Trigger the workflow on push or pull request, but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 env:
   target_python_version: 3.8
