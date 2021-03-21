@@ -1,12 +1,16 @@
 name: Python package
 
 on:
-  # Trigger the workflow on push or pull request, but only for the master branch
   push:
+    tags:
+      # Trigger the workflow on push of tags
+      - '*'
     branches:
+      # Trigger the workflow on push to the master branch
       - master
   pull_request:
     branches:
+      # Trigger the workflow on pull request targeting the master branch
       - master
 
 env:
