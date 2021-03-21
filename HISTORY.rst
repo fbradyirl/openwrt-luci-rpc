@@ -136,6 +136,6 @@ History
 * Support newer openwrt snapshot versions (#45)
 * Fix tox in github actions and also test py38 (#46)
 
-1.1.x (unreleased)
+1.1.9 (2021-03-21)
 ------------------
 * Publish to pypi only once in github actions (#47)
