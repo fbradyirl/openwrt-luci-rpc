@@ -135,3 +135,7 @@ History
 ------------------
 * Support newer openwrt snapshot versions (#45)
 * Fix tox in github actions and also test py38 (#46)
+
+1.1.x (unreleased)
+------------------
+* Publish to pypi only once in github actions (#47)
