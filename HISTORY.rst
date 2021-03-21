@@ -143,3 +143,7 @@ History
 1.1.10 (2021-03-21)
 -------------------
 * Also trigger the Github Actions on push of tags (#49)
+
+1.1.11 (2021-03-21)
+-------------------
+* Add rst-linter pre-commit hook to prevent committing errors to HISTORY.rst #50
