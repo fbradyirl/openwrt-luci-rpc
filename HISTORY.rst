@@ -139,3 +139,7 @@ History
 1.1.9 (2021-03-21)
 ------------------
 * Publish to pypi only once in github actions (#47)
+
+1.1.10 (2021-03-21)
+------------------
+* Also trigger the Github Actions on push of tags (#49)
