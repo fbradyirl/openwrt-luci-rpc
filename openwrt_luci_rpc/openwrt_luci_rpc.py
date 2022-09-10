@@ -187,10 +187,8 @@ class OpenWrtLuciRPC:
             device = namedtuple("Device", device_entry.keys())(
                 *device_entry.values())
 
-            if "Flags" in device_entry and only_reachable:
-                # Check if the Flags for each device contain
-                # NUD_REACHABLE and if not, skip.
-                if not int(device_entry['Flags'], 16) & 0x2:
+            if "reachable" in device_entry and only_reachable:                
+                if device_entry['reachable'] == False:
                     continue
 
             last_results.append(device)
