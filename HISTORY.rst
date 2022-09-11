@@ -147,3 +147,8 @@ History
 1.1.11 (2021-03-21)
 -------------------
 * Add rst-linter pre-commit hook to prevent committing errors to HISTORY.rst #50
+
+
+1.1.12 (2022-09-11)
+-------------------
+* Includes latest fixes to support newer versions of OpenWrt
