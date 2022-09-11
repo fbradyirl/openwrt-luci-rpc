@@ -39,6 +39,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/fbradyirl/openwrt-luci-rpc',
-    version='1.1.11',
+    version='1.1.12',
     zip_safe=False,
 )
