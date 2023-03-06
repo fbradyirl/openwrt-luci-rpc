@@ -114,7 +114,7 @@ class OpenWrtLuciRPC:
             self._refresh_token()
             return self._determine_if_legacy_version()
         except Exception:
-            log.error("Could not determine OpenWRT version, \
+            log.debug("Could not determine OpenWRT version, \
                          defaulting to version 18.06")
             self.owrt_version = version.parse("18.06")
 
