@@ -189,15 +189,15 @@ class OpenWrtLuciRPC:
 
             if self.is_legacy_version:
                 if "Flags" in device_entry and only_reachable:
-                # Check if the Flags for each device contain
-                # NUD_REACHABLE and if not, skip.
+                    # Check if the Flags for each device contain
+                    # NUD_REACHABLE and if not, skip.
                     if not int(device_entry['Flags'], 16) & 0x2:
                         continue
             else:
-                if "reachable" in device_entry and only_reachable:                
-                    if device_entry['reachable'] == False:
+                if "reachable" in device_entry and only_reachable:
+                    if device_entry['reachable'] is False:
                         continue
-            
+
             last_results.append(device)
 
         log.debug(last_results)

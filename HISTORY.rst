@@ -157,3 +157,8 @@ History
 1.1.13 (2023-03-09)
 -------------------
 *  Downgrade logging level for version detection (#57)
+
+
+1.1.14 (2023-03-09)
+-------------------
+* Fix flake8
