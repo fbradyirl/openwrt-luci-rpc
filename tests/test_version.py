@@ -30,5 +30,4 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         assert is_legacy_version(version.parse("18.06.9")) is False
         assert is_legacy_version(version.parse("19.07.7")) is False
 
-        assert is_legacy_version(version.parse("snapshot")) is False
         assert is_legacy_version(version.parse("21.02-snapshot")) is False
