@@ -154,16 +154,7 @@ History
 * Includes latest fixes to support newer versions of OpenWrt
 
 
-1.1.13 (2023-03-09)
+1.1.16 (2023-03-09)
 -------------------
-*  Downgrade logging level for version detection (#57)
-
-
-1.1.14 (2023-03-09)
--------------------
-* Fix flake8
-
-
-1.1.15 (2023-03-09)
--------------------
+* Downgrade logging level for version detection (#57)
 * Modify test
