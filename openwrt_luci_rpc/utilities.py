@@ -42,5 +42,5 @@ def get_hostname_from_dhcp(dhcp_result, mac):
 def is_legacy_version(owrt_version):
     return (
         "snapshot" not in owrt_version.public and
-        owrt_version < version.parse("18.06")
+        version.parse("18.06") > owrt_version >= version.parse("15.06")
     )
