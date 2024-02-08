@@ -51,3 +51,22 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
 
         data = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:DD")
         assert data is None
+
+    def test_get_hostname_from_dhcp_multiple_mac_string_formating(self):
+        """Test if lower case string of MAC match with Upper case of multi mac list."""
+
+        data = [{
+            ".name": "cfg07ee1",
+            ".type": "host",
+            "name": "imac-ethernet",
+            ".index": 4,
+            "mac": {"c8:2a:10:4a:10:d9","c8:2a:10:4a:10:dd"},
+            "dns": "1",
+            ".anonymous": True,
+            "ip": "192.168.1.124"
+        }]
+
+        data = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:DD")
+        assert data is None
+        data = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:D9")
+        assert data is None
