@@ -29,8 +29,7 @@ def get_hostname_from_dhcp(dhcp_result, mac):
                 if x['.type'] == 'host'
                 and 'mac' in x
                 and 'name' in x
-                and x['mac'].upper() == mac]
-
+                and str(x['mac']).upper().find(mac) != -1]
         if host:
             log.debug("DNS name lookup for mac {} "
                       "found {}".format(mac, host[0]['name']))
