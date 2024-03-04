@@ -3,42 +3,42 @@
 
 """The setup script."""
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
-with open('README.rst') as readme_file:
+with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
+with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ['Click>=6.0', 'requests>=2.21.0', 'packaging>=19.1']
+requirements = ["Click>=6.0", "requests>=2.21.0", "packaging>=19.1"]
 
-setup_requirements = [ ]
+setup_requirements = []
 
-test_requirements = [ ]
+test_requirements = []
 
 setup(
     author="Finbarr Brady",
-    author_email='fbradyirl@github.io',
+    author_email="fbradyirl@github.io",
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3.7',
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3.7",
     ],
     description="Module for interacting with OpenWrt Luci RPC interface",
     install_requires=requirements,
     license="Apache Software License 2.0",
-    long_description=readme + '\n\n' + history,
+    long_description=readme + "\n\n" + history,
     include_package_data=True,
-    keywords='openwrt-luci-rpc',
-    name='openwrt-luci-rpc',
-    packages=find_packages(include=['openwrt_luci_rpc']),
+    keywords="openwrt-luci-rpc",
+    name="openwrt-luci-rpc",
+    packages=find_packages(include=["openwrt_luci_rpc"]),
     setup_requires=setup_requirements,
-    test_suite='tests',
+    test_suite="tests",
     tests_require=test_requirements,
-    url='https://github.com/fbradyirl/openwrt-luci-rpc',
-    version='1.1.16',
+    url="https://github.com/fbradyirl/openwrt-luci-rpc",
+    version="1.1.17",
     zip_safe=False,
 )
