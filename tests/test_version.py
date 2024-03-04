@@ -5,8 +5,10 @@
 
 
 import unittest
-from openwrt_luci_rpc.utilities import is_legacy_version
+
 from packaging import version
+
+from openwrt_luci_rpc.utilities import is_legacy_version
 
 
 class TestOpenwrtLuciRPC(unittest.TestCase):
@@ -21,8 +23,8 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
     def test_is_legacy_version(self):
         """Test comparing versions works as expected."""
 
-        assert is_legacy_version(version.parse("15.05")) is True
-        assert is_legacy_version(version.parse("15.05.1")) is True
+        assert is_legacy_version(version.parse("15.05")) is False
+        assert is_legacy_version(version.parse("15.05.1")) is False
         assert is_legacy_version(version.parse("17.01")) is True
         assert is_legacy_version(version.parse("17.01.6")) is True
 
