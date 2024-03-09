@@ -25,7 +25,7 @@ log = logging.getLogger(__name__)
 
 class OpenWrtLuciRPC:
 
-    def __init__(self, host, username, password, is_https, verify_https):
+    def __init__(self, host, username, password, is_https, verify_https, token=None):
         """
         Initiate an API request with all parameters
         :param host: string
@@ -58,12 +58,18 @@ class OpenWrtLuciRPC:
         self.session = requests.Session()
         self.token = None
         self.owrt_version = None
-        self._refresh_token()
+        self.fixedtoken = token
+        if token:
+            self.token = token
+        else:
+            self._refresh_token()
         self.is_legacy_version, self.arp_call \
             = self._determine_if_legacy_version()
 
     def _refresh_token(self):
         """Get authentication token for the given configuration."""
+        if self.fixedtoken:
+            raise InvalidLuciFixedTokenError("Use fixed Token, can't refresh.")
         auth_url = Constants.\
             LUCI_RPC_LOGIN_PATH.format(self.host_api_url)
         self.token = self._call_json_rpc(auth_url, 'login',

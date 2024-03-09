@@ -32,6 +32,12 @@ class InvalidLuciTokenError(Exception):
     pass
 
 
+class InvalidLuciFixedTokenError(Exception):
+    """When an invalid token is detected."""
+
+    pass
+
+
 class LuciRpcMethodNotFoundError(Exception):
     """When an invalid method is called."""
 
