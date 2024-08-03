@@ -122,7 +122,7 @@ class OpenWrtLuciRPC:
             LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
         rpc_ip_call = Constants.\
             LUCI_RPC_IP_PATH.format(
-                self.host_api_url), 'neighbors', {"family": 4}
+                self.host_api_url), 'neighbors'
 
         if utilities.is_legacy_version(self.owrt_version):
             return True, rpc_sys_arp_call
