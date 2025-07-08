@@ -59,8 +59,7 @@ class OpenWrtLuciRPC:
         self.token = None
         self.owrt_version = None
         self._refresh_token()
-        self.is_legacy_version, self.arp_call \
-            = self._determine_if_legacy_version()
+        self.is_legacy_version = self._determine_if_legacy_version()
 
     def _refresh_token(self):
         """Get authentication token for the given configuration."""
@@ -118,16 +117,7 @@ class OpenWrtLuciRPC:
                          defaulting to version 18.06")
             self.owrt_version = version.parse("18.06")
 
-        rpc_sys_arp_call = Constants.\
-            LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
-        rpc_ip_call = Constants.\
-            LUCI_RPC_IP_PATH.format(
-                self.host_api_url), 'neighbors', {"family": 4}
-
-        if utilities.is_legacy_version(self.owrt_version):
-            return True, rpc_sys_arp_call
-        else:
-            return False, rpc_ip_call
+        return utilities.is_legacy_version(self.owrt_version)
 
     def get_all_connected_devices(self, only_reachable, wlan_interfaces):
         """
@@ -154,11 +144,24 @@ class OpenWrtLuciRPC:
         #                       'wifi.getiwinfo', wlan_interfaces
         rpc_uci_call = Constants.LUCI_RPC_UCI_PATH.format(
             self.host_api_url), 'get_all', 'dhcp'
+        rpc_sys_arp_call = Constants.\
+            LUCI_RPC_SYS_PATH.format(self.host_api_url), 'net.arptable'
+        rpc_ip_call = Constants.\
+            LUCI_RPC_IP_PATH.format(
+                self.host_api_url), 'neighbors', {"family": 4}
+        rpc_ip6_call = Constants.\
+            LUCI_RPC_IP_PATH.format(
+                self.host_api_url), 'neighbors', {"family": 6}
 
         try:
             # First, try find the associated wifi devices
             # winfo_result = self._call_json_rpc(*rpc_sys__winfo_call)
-            arp_result = self._call_json_rpc(*self.arp_call)
+            if self.is_legacy_version:
+                device_entries = self._call_json_rpc(*rpc_sys_arp_call)
+            else:
+                device_entries = self._call_json_rpc(*rpc_ip6_call)
+                device_entries = device_entries +\
+                    self._call_json_rpc(*rpc_ip_call)
             dhcp_result = self._call_json_rpc(*rpc_uci_call)
         except InvalidLuciTokenError:
             log.info("Refreshing login token")
@@ -166,13 +169,14 @@ class OpenWrtLuciRPC:
             return self.get_all_connected_devices(only_reachable,
                                                   wlan_interfaces)
 
-        for device_entry in arp_result:
+        seen = set()
+        for device_entry in device_entries:
             if device_entry is None:
                 continue
 
             device_entry = utilities.normalise_keys(device_entry)
 
-            if "mac" not in device_entry:
+            if "mac" not in device_entry or device_entry["mac"] in seen:
                 continue
 
             device_entry['hostname'] = utilities.get_hostname_from_dhcp(
@@ -198,6 +202,7 @@ class OpenWrtLuciRPC:
                     if device_entry['reachable'] is False:
                         continue
 
+            seen.add(device_entry["mac"])
             last_results.append(device)
 
         log.debug(last_results)
