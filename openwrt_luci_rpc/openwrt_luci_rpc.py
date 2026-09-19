@@ -167,7 +167,9 @@ class OpenWrtLuciRPC:
                                                   wlan_interfaces)
 
         for device_entry in arp_result:
-            if device_entry is None:
+            if not isinstance(device_entry, dict):
+                log.warning("Ignoring ARP entry with unexpected type: %s",
+                            type(device_entry).__name__)
                 continue
 
             device_entry = utilities.normalise_keys(device_entry)
