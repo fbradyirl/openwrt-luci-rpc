@@ -11,6 +11,7 @@ from openwrt_luci_rpc import OpenWrtRpc
 from openwrt_luci_rpc.constants import Constants
 from openwrt_luci_rpc import utilities
 from openwrt_luci_rpc.exceptions import LuciConfigError
+from openwrt_luci_rpc.openwrt_luci_rpc import OpenWrtLuciRPC
 
 
 class TestOpenwrtLuciRPC(unittest.TestCase):
@@ -80,3 +81,18 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         data = utilities.normalise_keys(None)
 
         assert data is None
+
+    def test_get_all_connected_devices_skips_malformed_arp_entries(self):
+        """A malformed ARP row must not abort the complete device scan."""
+        router = object.__new__(OpenWrtLuciRPC)
+        router.arp_call = ("/arp", "get")
+        router.is_legacy_version = False
+        router.host = "router.local"
+        router.host_api_url = "http://router.local"
+        router._call_json_rpc = Mock(side_effect=[[123], {}])
+
+        devices = router.get_all_connected_devices(
+            only_reachable=False, wlan_interfaces=[]
+        )
+
+        self.assertEqual(devices, [])
