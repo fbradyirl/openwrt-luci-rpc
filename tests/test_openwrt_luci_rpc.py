@@ -80,3 +80,21 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         data = utilities.normalise_keys(None)
 
         assert data is None
+
+    def test_get_hostname_from_dhcp_normalizes_mac_case(self):
+        """Test a lowercase neighbor MAC matches a UCI host reservation."""
+
+        dhcp_result = {
+            "cfg123456": {
+                ".type": "host",
+                "name": "example-host",
+                "mac": "3C:37:86:D4:76:3A 00:E0:4C:36:00:A9",
+                "ip": "192.168.1.32",
+            }
+        }
+
+        hostname = utilities.get_hostname_from_dhcp(
+            dhcp_result, "00:e0:4c:36:00:a9"
+        )
+
+        assert hostname == "example-host"

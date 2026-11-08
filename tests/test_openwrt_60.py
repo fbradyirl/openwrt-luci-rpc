@@ -35,7 +35,7 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         ]
 
         data = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:DD")
-        assert data is None
+        assert data == "imac-ethernet"
 
     def test_get_hostname_from_dhcp_mac_string_formating(self):
         """Test if lower case string of MAC match with Upper case."""
@@ -54,7 +54,7 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
         ]
 
         data = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:DD")
-        assert data is None
+        assert data == "imac-ethernet"
 
     def test_get_hostname_from_dhcp_multiple_mac_string_formating(self):
         """Test if lower case string of MAC match with Upper case of multi mac list."""  # noqa: E501python setup.py test
@@ -72,7 +72,7 @@ class TestOpenwrtLuciRPC(unittest.TestCase):
             }
         ]
 
-        data = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:DD")
-        assert data is None
-        data = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:D9")
-        assert data is None
+        hostname = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:DD")
+        assert hostname == "imac-ethernet"
+        hostname = utilities.get_hostname_from_dhcp(data, "C8:2A:10:4A:10:D9")
+        assert hostname == "imac-ethernet"
